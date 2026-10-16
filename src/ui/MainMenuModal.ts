@@ -1,5 +1,6 @@
 import { saveManager } from '../persistence/SaveManager';
 import { audioManager } from '../engine/AudioManager';
+import { uiStateManager } from '../systems/UIStateManager';
 
 export class MainMenuModal {
   private container: HTMLElement;
@@ -21,6 +22,9 @@ export class MainMenuModal {
   private createDOM(): void {
     const wrapper = document.createElement('div');
     wrapper.id = 'main-menu-root';
+    wrapper.setAttribute('role', 'dialog');
+    wrapper.setAttribute('aria-modal', 'true');
+    wrapper.setAttribute('aria-label', 'Main Title Menu');
     wrapper.style.cssText = `
       position: absolute;
       inset: 0;
@@ -41,12 +45,20 @@ export class MainMenuModal {
 
   private bindEvents(): void {
     window.addEventListener('keydown', (e) => {
-      if (this.isVisible && e.key === 'Escape') {
+      if (e.key !== 'Escape' || e.repeat) return;
+
+      if (this.isVisible && uiStateManager.getTopModal() === 'main-menu') {
         if (this.showingGuide) {
           e.preventDefault();
           this.showingGuide = false;
           this.render();
+        } else if (uiStateManager.isGameStarted()) {
+          e.preventDefault();
+          this.close();
         }
+      } else if (!this.isVisible && !uiStateManager.isAnyModalOpen() && uiStateManager.isGameStarted()) {
+        e.preventDefault();
+        this.open();
       }
     });
 
@@ -56,14 +68,16 @@ export class MainMenuModal {
   }
 
   public open(onStart?: () => void): void {
-    this.onStartCallback = onStart || null;
+    if (onStart) {
+      this.onStartCallback = onStart;
+    }
     this.isVisible = true;
     this.showingGuide = false;
     if (this.rootEl) {
       this.rootEl.style.display = 'flex';
     }
     audioManager.playSynthesizedSFX('blip');
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: true } }));
+    uiStateManager.registerOpen('main-menu');
     this.render();
   }
 
@@ -72,11 +86,13 @@ export class MainMenuModal {
     this.rootEl.style.display = 'none';
     this.isVisible = false;
     audioManager.playSynthesizedSFX('click');
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: false } }));
+    uiStateManager.markGameStarted();
+    uiStateManager.registerClose('main-menu');
 
     if (this.onStartCallback) {
-      this.onStartCallback();
+      const cb = this.onStartCallback;
       this.onStartCallback = null;
+      cb();
     }
   }
 
@@ -93,9 +109,12 @@ export class MainMenuModal {
     }
 
     const save = saveManager.load();
-    const hasProgress = save.completedObjectiveIds.length > 0 ||
+    const hasProgress =
+      uiStateManager.isGameStarted() ||
+      save.completedObjectiveIds.length > 0 ||
       save.collectedEvidenceIds.length > 0 ||
-      save.checkpoint.checkpointId !== 'station_awakening';
+      save.checkpoint.checkpointId !== 'station_awakening' ||
+      save.checkpoint.playerX !== 180;
 
     this.rootEl.innerHTML = `
       <div style="width: min(580px, 94vw); background: rgba(13, 20, 32, 0.98); border: 1.5px solid rgba(56, 189, 248, 0.5); border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,0.9), 0 0 45px rgba(56, 189, 248, 0.2); display: flex; flex-direction: column; overflow: hidden; text-align: center;">

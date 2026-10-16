@@ -51,7 +51,38 @@ export class AudioManager {
   }
 
   public updateSettings(newSettings: Partial<AudioSettings>): void {
-    this.settings = { ...this.settings, ...newSettings };
+    const merged: AudioSettings = { ...this.settings, ...newSettings };
+    merged.masterVolume = Math.min(1, Math.max(0, Number.isFinite(merged.masterVolume) ? merged.masterVolume : 0.8));
+    merged.musicVolume = Math.min(1, Math.max(0, Number.isFinite(merged.musicVolume) ? merged.musicVolume : 0.7));
+    merged.sfxVolume = Math.min(1, Math.max(0, Number.isFinite(merged.sfxVolume) ? merged.sfxVolume : 0.85));
+    merged.voiceVolume = Math.min(1, Math.max(0, Number.isFinite(merged.voiceVolume) ? merged.voiceVolume : 0.9));
+    merged.muted = Boolean(merged.muted);
+
+    this.settings = merged;
+
+    // Live-sync ambient drone gain if active
+    if (this.ambientGain && this.ctx) {
+      try {
+        const now = this.ctx.currentTime;
+        const targetVol = this.settings.muted
+          ? 0.0001
+          : Math.max(0.0001, this.settings.masterVolume * this.settings.musicVolume * 0.07);
+        this.ambientGain.gain.cancelScheduledValues(now);
+        this.ambientGain.gain.setTargetAtTime(targetVol, now, 0.08);
+      } catch {
+        // Ignore audio scheduling errors in headless environments
+      }
+    } else if (!this.settings.muted && this.isUnlocked && !this.ambientGain) {
+      this.startAmbientDrone();
+    }
+
+    if (typeof window !== 'undefined' && typeof CustomEvent !== 'undefined') {
+      window.dispatchEvent(
+        new CustomEvent('audio:settings_changed', {
+          detail: { settings: this.getSettings() }
+        })
+      );
+    }
   }
 
   public playSynthesizedSFX(type: 'click' | 'blip' | 'success' | 'error' | 'static' | 'radio_on' | 'footstep'): void {
@@ -63,6 +94,7 @@ export class AudioManager {
       const gain = this.ctx.createGain();
 
       const masterVol = this.settings.masterVolume * this.settings.sfxVolume;
+      if (masterVol <= 0.001) return;
 
       osc.connect(gain);
       gain.connect(this.ctx.destination);
@@ -165,8 +197,8 @@ export class AudioManager {
       filter.frequency.setValueAtTime(160, now);
 
       this.ambientGain = this.ctx.createGain();
-      const vol = this.settings.masterVolume * this.settings.musicVolume * 0.07;
-      this.ambientGain.gain.setValueAtTime(0.001, now);
+      const vol = Math.max(0.0001, this.settings.masterVolume * this.settings.musicVolume * 0.07);
+      this.ambientGain.gain.setValueAtTime(0.0001, now);
       this.ambientGain.gain.linearRampToValueAtTime(vol, now + 2.0);
 
       this.ambientOsc1 = this.ctx.createOscillator();
@@ -193,7 +225,7 @@ export class AudioManager {
     if (this.ambientGain && this.ctx) {
       try {
         const now = this.ctx.currentTime;
-        this.ambientGain.gain.linearRampToValueAtTime(0.001, now + 0.8);
+        this.ambientGain.gain.linearRampToValueAtTime(0.0001, now + 0.8);
         setTimeout(() => {
           this.ambientOsc1?.stop();
           this.ambientOsc2?.stop();

@@ -17,6 +17,7 @@ export class InputManager {
   private virtualInteract: boolean = false;
   private virtualJournal: boolean = false;
   private enabled: boolean = true;
+  private unlockCooldownUntil: number = 0;
 
   constructor(scene: Phaser.Scene) {
     this.scene = scene;
@@ -37,9 +38,13 @@ export class InputManager {
   }
 
   public setEnabled(enabled: boolean): void {
+    const wasDisabled = !this.enabled;
     this.enabled = enabled;
-    if (!enabled) {
-      this.resetInputs();
+    this.resetInputs();
+
+    if (enabled && wasDisabled) {
+      // Prevent modal-closing keystrokes (E / Space / Esc / J) from triggering in-world actions on the same frame
+      this.unlockCooldownUntil = Date.now() + 180;
     }
   }
 
@@ -52,9 +57,16 @@ export class InputManager {
     this.virtualRight = false;
     this.virtualInteract = false;
     this.virtualJournal = false;
+
+    // Clear Phaser JustDown state on action keys
+    if (this.keyE) Phaser.Input.Keyboard.JustDown(this.keyE);
+    if (this.keyJ) Phaser.Input.Keyboard.JustDown(this.keyJ);
+    if (this.keyEsc) Phaser.Input.Keyboard.JustDown(this.keyEsc);
+    if (this.cursors?.space) Phaser.Input.Keyboard.JustDown(this.cursors.space);
   }
 
   public setVirtualInput(control: 'left' | 'right' | 'interact' | 'journal', pressed: boolean): void {
+    if (!this.enabled) return;
     switch (control) {
       case 'left': this.virtualLeft = pressed; break;
       case 'right': this.virtualRight = pressed; break;
@@ -76,19 +88,24 @@ export class InputManager {
       };
     }
 
+    const inCooldown = Date.now() < this.unlockCooldownUntil;
+
     const kbLeft = Boolean(this.cursors?.left.isDown || this.keyA?.isDown);
     const kbRight = Boolean(this.cursors?.right.isDown || this.keyD?.isDown);
     const kbUp = Boolean(this.cursors?.up.isDown || this.keyW?.isDown);
     const kbDown = Boolean(this.cursors?.down.isDown || this.keyS?.isDown);
-    const kbInteract = Boolean(
+
+    // Consume JustDown states even during cooldown so they don't stay queued
+    const rawInteract = Boolean(
       (this.keyE && Phaser.Input.Keyboard.JustDown(this.keyE)) ||
       (this.cursors?.space && Phaser.Input.Keyboard.JustDown(this.cursors.space))
     );
-    const kbJournal = Boolean(this.keyJ && Phaser.Input.Keyboard.JustDown(this.keyJ));
-    const kbPause = Boolean(this.keyEsc && Phaser.Input.Keyboard.JustDown(this.keyEsc));
+    const rawJournal = Boolean(this.keyJ && Phaser.Input.Keyboard.JustDown(this.keyJ));
+    const rawPause = Boolean(this.keyEsc && Phaser.Input.Keyboard.JustDown(this.keyEsc));
 
-    const interact = kbInteract || this.virtualInteract;
-    const journal = kbJournal || this.virtualJournal;
+    const interact = !inCooldown && (rawInteract || this.virtualInteract);
+    const journal = !inCooldown && (rawJournal || this.virtualJournal);
+    const pause = !inCooldown && rawPause;
 
     // Reset single-pulse virtual triggers
     if (this.virtualInteract) this.virtualInteract = false;
@@ -101,7 +118,7 @@ export class InputManager {
       down: kbDown,
       interact,
       journal,
-      pause: kbPause
+      pause
     };
   }
 }

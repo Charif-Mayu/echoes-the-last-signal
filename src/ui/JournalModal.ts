@@ -2,6 +2,7 @@ import { evidenceManager } from '../systems/EvidenceManager';
 import { objectiveTracker } from '../systems/ObjectiveTracker';
 import { audioManager } from '../engine/AudioManager';
 import { saveManager } from '../persistence/SaveManager';
+import { uiStateManager } from '../systems/UIStateManager';
 import vocabularyData from '../../content/learning/vocabulary.json';
 import { VocabularyItem } from '../types/learning';
 
@@ -24,6 +25,9 @@ export class JournalModal {
   private createDOM(): void {
     const wrapper = document.createElement('div');
     wrapper.id = 'journal-modal-root';
+    wrapper.setAttribute('role', 'dialog');
+    wrapper.setAttribute('aria-modal', 'true');
+    wrapper.setAttribute('aria-label', "Investigator's Field Log");
     wrapper.style.cssText = `
       position: absolute;
       inset: 0;
@@ -41,33 +45,33 @@ export class JournalModal {
     wrapper.innerHTML = `
       <div style="width: min(900px, 94vw); height: min(620px, 88vh); background: rgba(13, 20, 32, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); border-radius: 14px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.15); display: flex; flex-direction: column; overflow: hidden;">
         <!-- Header with Tabs & Close Button -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); background: rgba(15, 23, 42, 0.8);">
-          <div style="display: flex; align-items: center; gap: 16px;">
-            <div style="font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: #38bdf8; letter-spacing: 0.1em; display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 14px 20px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); background: rgba(15, 23, 42, 0.8);">
+          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">
+            <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #38bdf8; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px;">
               <span>📁</span>
               <span>INVESTIGATOR'S FIELD LOG</span>
             </div>
             <!-- Navigation Tabs -->
-            <div style="display: flex; gap: 6px;">
-              <button id="jtab-btn-evidence" class="interactive-element" style="background: rgba(14, 116, 144, 0.5); border: 1px solid #38bdf8; color: #f8fafc; border-radius: 6px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
+            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
+              <button id="jtab-btn-evidence" class="interactive-element" style="background: rgba(14, 116, 144, 0.5); border: 1px solid #38bdf8; color: #f8fafc; border-radius: 6px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
                 Evidence (<span id="jtab-evidence-count">0/3</span>)
               </button>
-              <button id="jtab-btn-vocab" class="interactive-element" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; border-radius: 6px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
+              <button id="jtab-btn-vocab" class="interactive-element" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; border-radius: 6px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
                 Vocabulary Bank
               </button>
-              <button id="jtab-btn-objectives" class="interactive-element" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; border-radius: 6px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
+              <button id="jtab-btn-objectives" class="interactive-element" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; border-radius: 6px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
                 Missions & Steps
               </button>
             </div>
           </div>
           <!-- Close Button -->
-          <button id="journal-btn-close" class="interactive-element" style="background: transparent; border: none; color: #94a3b8; font-size: 20px; font-weight: bold; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.2s;">
+          <button id="journal-btn-close" aria-label="Close Field Log" class="interactive-element" style="background: transparent; border: none; color: #94a3b8; font-size: 20px; font-weight: bold; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.2s;">
             ✕
           </button>
         </div>
 
         <!-- Scrollable Body Content -->
-        <div id="journal-body-content" style="flex: 1; padding: 24px; overflow-y: auto; box-sizing: border-box;">
+        <div id="journal-body-content" style="flex: 1; padding: 20px; overflow-y: auto; box-sizing: border-box;">
           <!-- Injected dynamically via renderTabContent -->
         </div>
       </div>
@@ -79,7 +83,7 @@ export class JournalModal {
 
   private bindEvents(): void {
     const closeBtn = document.getElementById('journal-btn-close');
-    closeBtn?.addEventListener('click', () => this.toggle());
+    closeBtn?.addEventListener('click', () => this.toggle(false));
 
     // Tab buttons
     const tabEvidence = document.getElementById('jtab-btn-evidence');
@@ -93,23 +97,24 @@ export class JournalModal {
     // Keyboard shortcut [J] to toggle, [Esc] to close
     window.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'j' && !e.repeat) {
-        const dlgRoot = document.getElementById('dialogue-modal-root');
-        const puzRoot = document.getElementById('puzzle-modal-root');
-        if (
-          (dlgRoot && dlgRoot.style.display && dlgRoot.style.display !== 'none') ||
-          (puzRoot && puzRoot.style.display && puzRoot.style.display !== 'none')
-        ) {
-          return;
+        if (this.isVisible && uiStateManager.getTopModal() === 'journal') {
+          e.preventDefault();
+          this.toggle(false);
+        } else if (!uiStateManager.isAnyModalOpen()) {
+          e.preventDefault();
+          this.toggle(true);
         }
-        this.toggle();
-      } else if (e.key === 'Escape' && this.isVisible) {
+      } else if (e.key === 'Escape' && this.isVisible && uiStateManager.getTopModal() === 'journal') {
+        e.preventDefault();
         this.toggle(false);
       }
     });
 
     // Custom window event to open journal directly from HUD
     window.addEventListener('ui:open_journal', () => {
-      this.toggle(true);
+      if (!uiStateManager.isAnyModalOpen()) {
+        this.toggle(true);
+      }
     });
   }
 
@@ -124,11 +129,11 @@ export class JournalModal {
 
     if (this.isVisible) {
       audioManager.playSynthesizedSFX('blip');
-      window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: true } }));
+      uiStateManager.registerOpen('journal');
       this.renderCurrentTab();
     } else {
       audioManager.playSynthesizedSFX('click');
-      window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: false } }));
+      uiStateManager.registerClose('journal');
     }
   }
 

@@ -15,15 +15,20 @@ import { saveManager } from './persistence/SaveManager';
 import { dialogueRunner } from './systems/DialogueRunner';
 import { evidenceManager } from './systems/EvidenceManager';
 import { objectiveTracker } from './systems/ObjectiveTracker';
+import { uiStateManager } from './systems/UIStateManager';
 import { learningEngine } from './learning/LearningEngine';
 import { DialogueTree } from './types/narrative';
 import miraRadioData from '../content/dialogues/mira_radio.json';
 
 console.log(
-  '%c ECHOES: THE LAST SIGNAL %c Checkpoint 5 Complete Chapter 1 & Save System Active ',
+  '%c ECHOES: THE LAST SIGNAL %c Checkpoint 6 Deep QA, Accessibility & Edge Cases Verified ',
   'background: #0e7490; color: #fff; font-weight: bold;',
   'background: #0f172a; color: #38bdf8;'
 );
+
+// 0. Sync persisted audio settings before UI renders
+const persistedSave = saveManager.load();
+audioManager.updateSettings(persistedSave.settings.audio);
 
 // 1. Initialize DOM UI Layer
 let hud: HUDOverlay | null = null;
@@ -54,21 +59,20 @@ const config: Phaser.Types.Core.GameConfig = {
 
 const game = new Phaser.Game(config);
 
-// 3. Initial Awakening Clue Discovery & Tutorial Toast
-if (!evidenceManager.hasClue('clue_broken_pocket_watch')) {
-  setTimeout(() => {
-    evidenceManager.discoverClue('clue_broken_pocket_watch');
-  }, 1200);
-}
-
-// Show title menu on initial load
+// 3. Show Title Menu on initial load and trigger Awakening sequence only when player enters game
 if (mainMenuModal) {
   mainMenuModal.open(() => {
-    // When title menu closes (Continue or New Game chosen)
+    // Discover initial pocket watch clue once the player enters Station 7
+    if (!evidenceManager.hasClue('clue_broken_pocket_watch')) {
+      setTimeout(() => {
+        evidenceManager.discoverClue('clue_broken_pocket_watch');
+      }, 600);
+    }
+
     if (objectiveTracker.getCurrentObjective().id === 'obj_wake_up') {
       setTimeout(() => {
         hud?.showToast('Awakening: Use [A/D] or [←/→] to move, [E / Space] to interact with station equipment.', 5000);
-      }, 800);
+      }, 1500);
     }
   });
 }
@@ -105,15 +109,8 @@ window.addEventListener('game:interaction', (e: Event) => {
   const customEvent = e as CustomEvent<{ target: { id: string; name: string } }>;
   const targetId = customEvent.detail.target.id;
 
-  // Prevent overlapping modal triggers
-  if (
-    dialogueModal?.getIsVisible() ||
-    journalModal?.getIsVisible() ||
-    puzzleModal?.getIsVisible() ||
-    settingsModal?.getIsVisible() ||
-    mainMenuModal?.getIsVisible() ||
-    chapterSummaryModal?.getIsVisible()
-  ) {
+  // Prevent overlapping modal triggers via centralized UIStateManager
+  if (uiStateManager.isAnyModalOpen()) {
     return;
   }
 
@@ -176,6 +173,7 @@ window.addEventListener('error', (event) => {
   objectiveTracker,
   dialogueRunner,
   learningEngine,
+  uiStateManager,
   hud,
   dialogueModal,
   journalModal,

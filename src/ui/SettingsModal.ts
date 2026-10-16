@@ -1,5 +1,6 @@
 import { saveManager } from '../persistence/SaveManager';
 import { audioManager } from '../engine/AudioManager';
+import { uiStateManager } from '../systems/UIStateManager';
 
 export class SettingsModal {
   private container: HTMLElement;
@@ -20,6 +21,9 @@ export class SettingsModal {
   private createDOM(): void {
     const wrapper = document.createElement('div');
     wrapper.id = 'settings-modal-root';
+    wrapper.setAttribute('role', 'dialog');
+    wrapper.setAttribute('aria-modal', 'true');
+    wrapper.setAttribute('aria-label', 'System Configuration');
     wrapper.style.cssText = `
       position: absolute;
       inset: 0;
@@ -28,7 +32,7 @@ export class SettingsModal {
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 70;
+      z-index: 90;
       pointer-events: auto;
       padding: 16px;
       box-sizing: border-box;
@@ -40,7 +44,7 @@ export class SettingsModal {
 
   private bindEvents(): void {
     window.addEventListener('keydown', (e) => {
-      if (this.isVisible && e.key === 'Escape') {
+      if (this.isVisible && uiStateManager.getTopModal() === 'settings' && e.key === 'Escape') {
         e.preventDefault();
         this.close();
       }
@@ -58,7 +62,7 @@ export class SettingsModal {
       this.rootEl.style.display = 'flex';
     }
     audioManager.playSynthesizedSFX('blip');
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: true } }));
+    uiStateManager.registerOpen('settings');
     this.render();
   }
 
@@ -67,7 +71,7 @@ export class SettingsModal {
     this.rootEl.style.display = 'none';
     this.isVisible = false;
     audioManager.playSynthesizedSFX('click');
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: false } }));
+    uiStateManager.registerClose('settings');
 
     if (this.onSaveCallback) {
       this.onSaveCallback();

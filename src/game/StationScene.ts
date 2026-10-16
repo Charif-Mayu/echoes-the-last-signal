@@ -10,6 +10,7 @@ import {
 import { InputManager } from '../engine/InputManager';
 import { saveManager } from '../persistence/SaveManager';
 import { audioManager } from '../engine/AudioManager';
+import { uiStateManager } from '../systems/UIStateManager';
 
 export class StationScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
@@ -67,6 +68,7 @@ export class StationScene extends Phaser.Scene {
     this.player.setSize(24, 60);
     this.player.setOffset(6, 6);
     this.player.setDepth(20);
+    this.player.setFlipX(saveState.checkpoint.facing === 'left');
     this.physics.add.collider(this.player, this.platforms);
 
     this.player.play('anim_investigator_idle');
@@ -78,8 +80,9 @@ export class StationScene extends Phaser.Scene {
     // Cinematic Awakening Fade-in
     this.cameras.main.fadeIn(1600, 4, 9, 18);
 
-    // 7. Input Manager
+    // 7. Input Manager (synchronized with any currently open modal)
     this.inputManager = new InputManager(this);
+    this.inputManager.setEnabled(!uiStateManager.isAnyModalOpen());
 
     // 8. Interaction Reticle HUD
     this.createFloatingReticleHUD();
@@ -318,6 +321,7 @@ export class StationScene extends Phaser.Scene {
       if (Math.abs((current.checkpoint.playerX || 0) - this.player.x) > 30) {
         current.checkpoint.playerX = Math.round(this.player.x);
         current.checkpoint.playerY = Math.round(this.player.y);
+        current.checkpoint.facing = this.player.flipX ? 'left' : 'right';
         saveManager.save(current);
       }
     }

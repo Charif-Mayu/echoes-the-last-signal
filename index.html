@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+  <meta name="description" content="ECHOES: The Last Signal — A 2.5D sci-fi mystery adventure that teaches English through contextual investigation." />
   <title>ECHOES: The Last Signal</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -78,6 +79,27 @@
       pointer-events: auto;
     }
 
+    /* Keyboard Accessibility Focus Ring (WCAG 2.1 AA) */
+    .interactive-element:focus-visible,
+    button:focus-visible,
+    select:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--accent-cyan);
+      outline-offset: 2px;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.5);
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.35;
+        transform: scale(0.9);
+      }
+    }
+
     /* Ambient noise & scanlines overlay */
     .scanlines-overlay {
       position: absolute;
@@ -95,6 +117,22 @@
       background-size: 100% 3px, 6px 100%;
       z-index: 5;
       opacity: 0.6;
+    }
+
+    /* Mobile & Compact Viewport Adaptations */
+    @media (max-width: 768px) {
+      .desktop-controls-legend {
+        display: none !important;
+      }
+    }
+
+    /* Reduced Motion Accessibility Support */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>

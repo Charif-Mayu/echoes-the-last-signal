@@ -1,6 +1,7 @@
 import { saveManager } from '../persistence/SaveManager';
 import { audioManager } from '../engine/AudioManager';
 import { ChapterSummaryCalculator, ChapterSummaryData } from '../learning/ChapterSummaryCalculator';
+import { uiStateManager } from '../systems/UIStateManager';
 
 export class ChapterSummaryModal {
   private container: HTMLElement;
@@ -21,6 +22,9 @@ export class ChapterSummaryModal {
   private createDOM(): void {
     const wrapper = document.createElement('div');
     wrapper.id = 'chapter-summary-modal-root';
+    wrapper.setAttribute('role', 'dialog');
+    wrapper.setAttribute('aria-modal', 'true');
+    wrapper.setAttribute('aria-label', 'Chapter 1 Completion Summary');
     wrapper.style.cssText = `
       position: absolute;
       inset: 0;
@@ -56,7 +60,7 @@ export class ChapterSummaryModal {
     }
 
     audioManager.playSynthesizedSFX('success');
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: true } }));
+    uiStateManager.registerOpen('summary');
     this.render();
   }
 
@@ -65,7 +69,7 @@ export class ChapterSummaryModal {
     this.rootEl.style.display = 'none';
     this.isVisible = false;
     audioManager.playSynthesizedSFX('click');
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: false } }));
+    uiStateManager.registerClose('summary');
 
     if (this.onContinueCallback) {
       this.onContinueCallback();

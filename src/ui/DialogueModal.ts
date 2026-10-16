@@ -2,6 +2,7 @@ import { DialogueLine, DialogueChoice } from '../types/narrative';
 import { dialogueRunner } from '../systems/DialogueRunner';
 import { audioManager } from '../engine/AudioManager';
 import { saveManager } from '../persistence/SaveManager';
+import { uiStateManager } from '../systems/UIStateManager';
 
 export class DialogueModal {
   private container: HTMLElement;
@@ -23,6 +24,9 @@ export class DialogueModal {
   private createDOM(): void {
     const wrapper = document.createElement('div');
     wrapper.id = 'dialogue-modal-root';
+    wrapper.setAttribute('role', 'dialog');
+    wrapper.setAttribute('aria-modal', 'true');
+    wrapper.setAttribute('aria-label', 'Radio Transmission Dialogue');
     wrapper.style.cssText = `
       position: absolute;
       bottom: 24px;
@@ -45,7 +49,7 @@ export class DialogueModal {
 
     wrapper.innerHTML = `
       <!-- Header / Speaker info -->
-      <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 8px;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 8px;">
         <div style="display: flex; align-items: center; gap: 8px;">
           <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; animation: pulse 1.5s infinite;"></span>
           <span id="dlg-speaker-name" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #38bdf8; letter-spacing: 0.08em; text-transform: uppercase;">
@@ -53,7 +57,7 @@ export class DialogueModal {
           </span>
         </div>
         <div style="display: flex; gap: 8px; align-items: center;">
-          <button id="dlg-btn-tts" title="Listen to pronunciation" style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 6px; color: #38bdf8; padding: 4px 10px; font-size: 11px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all 0.2s;">
+          <button id="dlg-btn-tts" title="Listen to pronunciation" class="interactive-element" style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 6px; color: #38bdf8; padding: 4px 10px; font-size: 11px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all 0.2s;">
             🔊 Listen
           </button>
           <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b;">[Space / E to advance]</span>
@@ -96,17 +100,22 @@ export class DialogueModal {
 
     // Keyboard Space / Enter / E to advance, or 1/2/3 for choices
     window.addEventListener('keydown', (e) => {
-      if (!this.isVisible) return;
+      if (!this.isVisible || uiStateManager.getTopModal() !== 'dialogue') return;
 
       if (e.key === ' ' || e.key === 'Enter' || e.key.toLowerCase() === 'e') {
-        // If choices are visible, don't advance blindly
-        if (this.currentLine?.choices && this.currentLine.choices.length > 0) return;
+        // Allow skipping typewriter even if line has choices; only block if typewriter finished and choices await selection
+        if (!this.typewriterTimer && this.currentLine?.choices && this.currentLine.choices.length > 0) {
+          return;
+        }
         e.preventDefault();
         this.handleAdvance();
       } else if (['1', '2', '3', '4'].includes(e.key)) {
         const index = parseInt(e.key, 10) - 1;
         if (this.currentLine?.choices && this.currentLine.choices[index]) {
           e.preventDefault();
+          if (this.typewriterTimer) {
+            this.handleAdvance();
+          }
           this.selectChoice(this.currentLine.choices[index].id);
         }
       }
@@ -126,9 +135,7 @@ export class DialogueModal {
     if (!this.rootEl) return;
     this.rootEl.style.display = 'flex';
     this.isVisible = true;
-
-    // Dispatch event to lock game input
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: true } }));
+    uiStateManager.registerOpen('dialogue');
   }
 
   public hide(): void {
@@ -142,8 +149,7 @@ export class DialogueModal {
       this.typewriterTimer = null;
     }
 
-    // Unlock game input
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: false } }));
+    uiStateManager.registerClose('dialogue');
   }
 
   private displayLine(line: DialogueLine): void {
@@ -154,6 +160,12 @@ export class DialogueModal {
     const enEl = document.getElementById('dlg-text-en');
     const thEl = document.getElementById('dlg-text-th');
     const choicesEl = document.getElementById('dlg-choices-container');
+
+    // Clear previous line's choices immediately so stale buttons are never shown during typing
+    if (choicesEl) {
+      choicesEl.style.display = 'none';
+      choicesEl.innerHTML = '';
+    }
 
     if (speakerEl) {
       speakerEl.textContent = line.speakerDisplayName || line.speaker.toUpperCase();
@@ -168,7 +180,7 @@ export class DialogueModal {
       enEl.textContent = '';
       const fullText = line.textEn;
       let charIndex = 0;
-      const speed = Math.max(12, settings.subtitles.textSpeedMs || 20);
+      const speed = Math.max(8, settings.subtitles.textSpeedMs || 20);
 
       this.typewriterTimer = window.setInterval(() => {
         if (charIndex < fullText.length) {

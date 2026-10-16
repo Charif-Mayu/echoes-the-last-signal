@@ -2,6 +2,7 @@ import { PuzzleItem, PuzzleEvaluationResult } from '../types/learning';
 import { learningEngine } from '../learning/LearningEngine';
 import { audioManager } from '../engine/AudioManager';
 import { saveManager } from '../persistence/SaveManager';
+import { uiStateManager } from '../systems/UIStateManager';
 
 export type PuzzleCompleteCallback = (puzzleId: string, result: PuzzleEvaluationResult) => void;
 
@@ -33,6 +34,9 @@ export class PuzzleModal {
   private createDOM(): void {
     const wrapper = document.createElement('div');
     wrapper.id = 'puzzle-modal-root';
+    wrapper.setAttribute('role', 'dialog');
+    wrapper.setAttribute('aria-modal', 'true');
+    wrapper.setAttribute('aria-label', 'Language Diagnostic Terminal');
     wrapper.style.cssText = `
       position: absolute;
       inset: 0;
@@ -53,7 +57,7 @@ export class PuzzleModal {
 
   private bindGlobalKeys(): void {
     window.addEventListener('keydown', (e) => {
-      if (!this.isVisible || !this.activePuzzle) return;
+      if (!this.isVisible || !this.activePuzzle || uiStateManager.getTopModal() !== 'puzzle') return;
 
       if (e.key === 'Escape' && !this.isSolved) {
         e.preventDefault();
@@ -111,7 +115,7 @@ export class PuzzleModal {
     }
 
     audioManager.playSynthesizedSFX('blip');
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: true } }));
+    uiStateManager.registerOpen('puzzle');
 
     this.render();
   }
@@ -123,7 +127,7 @@ export class PuzzleModal {
     this.activePuzzle = null;
 
     audioManager.playSynthesizedSFX('click');
-    window.dispatchEvent(new CustomEvent('game:input_lock', { detail: { locked: false } }));
+    uiStateManager.registerClose('puzzle');
   }
 
   public getIsVisible(): boolean {
