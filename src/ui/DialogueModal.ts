@@ -32,16 +32,17 @@ export class DialogueModal {
       bottom: 24px;
       left: 50%;
       transform: translateX(-50%);
-      width: min(840px, 94vw);
-      background: rgba(8, 14, 24, 0.94);
-      border: 1.5px solid rgba(56, 189, 248, 0.5);
-      border-radius: 12px;
-      padding: 20px 24px;
-      box-shadow: 0 16px 50px rgba(0, 0, 0, 0.8), 0 0 24px rgba(56, 189, 248, 0.15);
-      backdrop-filter: blur(12px);
+      width: min(860px, 94vw);
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(3, 7, 18, 0.90) 100%);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 24px;
+      padding: 22px 26px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       display: none;
       flex-direction: column;
-      gap: 12px;
+      gap: 14px;
       z-index: 50;
       pointer-events: auto;
       box-sizing: border-box;
@@ -49,27 +50,34 @@ export class DialogueModal {
 
     wrapper.innerHTML = `
       <!-- Header / Speaker info -->
-      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); padding-bottom: 8px;">
-        <div style="display: flex; align-items: center; gap: 8px;">
-          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; animation: pulse 1.5s infinite;"></span>
-          <span id="dlg-speaker-name" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; color: #38bdf8; letter-spacing: 0.08em; text-transform: uppercase;">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid rgba(56, 189, 248, 0.18); padding-bottom: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8; animation: pulse 1.5s infinite;"></span>
+          <span id="dlg-speaker-name" style="font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 700; color: #38bdf8; letter-spacing: 0.1em; text-transform: uppercase;">
             MIRA // EMERGENCY FREQUENCY
           </span>
         </div>
-        <div style="display: flex; gap: 8px; align-items: center;">
-          <button id="dlg-btn-tts" title="Listen to pronunciation" class="interactive-element" style="background: rgba(30, 41, 59, 0.7); border: 1px solid rgba(148, 163, 184, 0.3); border-radius: 6px; color: #38bdf8; padding: 4px 10px; font-size: 11px; font-family: 'JetBrains Mono', monospace; cursor: pointer; transition: all 0.2s;">
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button id="dlg-btn-tts" title="Listen to pronunciation" class="interactive-element" style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 999px; color: #38bdf8; padding: 5px 14px; font-size: 11px; font-family: 'Outfit', sans-serif; font-weight: 600; cursor: pointer; transition: all 0.2s; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);">
             🔊 Listen
           </button>
-          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b;">[Space / E to advance]</span>
+          <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #94a3b8;">[Space / E to advance]</span>
         </div>
       </div>
 
-      <!-- Dialogue Text Body -->
-      <div style="min-height: 48px; display: flex; flex-direction: column; gap: 6px;">
-        <!-- English Line (Primary) -->
-        <p id="dlg-text-en" style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 500; line-height: 1.5; color: #f8fafc; margin: 0;"></p>
-        <!-- Thai Translation (Subordinate) -->
-        <p id="dlg-text-th" style="font-family: 'Outfit', 'Chakra Petch', sans-serif; font-size: 13px; line-height: 1.4; color: #94a3b8; margin: 0;"></p>
+      <!-- Main Body: Rounded Character Portrait Frame + Dialogue Text -->
+      <div style="display: flex; align-items: center; gap: 18px;">
+        <!-- Rounded Silhouette Avatar Frame -->
+        <div id="dlg-portrait-frame" style="flex-shrink: 0; width: 74px; height: 74px; border-radius: 20px; background: radial-gradient(circle at 50% 35%, rgba(56, 189, 248, 0.25) 0%, rgba(15, 23, 42, 0.85) 75%); border: 1px solid rgba(56, 189, 248, 0.35); box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.12); display: flex; align-items: center; justify-content: center; overflow: hidden; position: relative;">
+        </div>
+
+        <!-- Dialogue Text Body -->
+        <div style="flex: 1; min-height: 54px; display: flex; flex-direction: column; justify-content: center; gap: 6px;">
+          <!-- English Line (Primary) -->
+          <p id="dlg-text-en" style="font-family: 'Outfit', sans-serif; font-size: 16.5px; font-weight: 500; line-height: 1.55; color: #f8fafc; margin: 0;"></p>
+          <!-- Thai Translation (Subordinate) -->
+          <p id="dlg-text-th" style="font-family: 'Outfit', 'Chakra Petch', sans-serif; font-size: 13.5px; line-height: 1.45; color: #94a3b8; margin: 0;"></p>
+        </div>
       </div>
 
       <!-- Dialogue Choices Container -->
@@ -78,6 +86,54 @@ export class DialogueModal {
 
     this.container.appendChild(wrapper);
     this.rootEl = wrapper;
+  }
+
+  private getPortraitSVG(speaker: string): string {
+    const s = speaker.toLowerCase();
+    if (s.includes('mira')) {
+      // Sleek curved silhouette of Mira with comms headset & glowing cyan signal wave
+      return `
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="miraGlow" cx="50%" cy="40%" r="50%">
+              <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.55"/>
+              <stop offset="100%" stop-color="#0f172a" stop-opacity="0"/>
+            </radialGradient>
+          </defs>
+          <circle cx="32" cy="28" r="26" fill="url(#miraGlow)"/>
+          <!-- Shoulders -->
+          <path d="M12 60 C14 47, 22 44, 32 44 C42 44, 50 47, 52 60 Z" fill="#0e7490" stroke="#38bdf8" stroke-width="1.2" stroke-opacity="0.5"/>
+          <!-- Head & Flowing Hair Silhouette -->
+          <path d="M20 30 C18 17, 25 12, 33 12 C41 12, 46 18, 45 29 C44 36, 38 40, 32 40 C26 40, 21 36, 20 30 Z" fill="#1e293b" stroke="#7dd3fc" stroke-width="1.2"/>
+          <!-- Comms Headset Arc & Glowing Ear Node -->
+          <path d="M22 26 C22 15, 42 15, 43 26" stroke="#38bdf8" stroke-width="2" stroke-linecap="round"/>
+          <circle cx="43" cy="28" r="3.5" fill="#38bdf8"/>
+          <path d="M43 29 Q38 34 33 34" stroke="#bae6fd" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Holographic Audio Waveform -->
+          <path d="M14 52 Q20 46 26 52 T38 52 T50 52" stroke="#38bdf8" stroke-width="1.5" stroke-linecap="round" stroke-opacity="0.8"/>
+        </svg>
+      `;
+    }
+    if (s.includes('system') || s.includes('echo')) {
+      return `
+        <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="20" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="5 3" stroke-opacity="0.7"/>
+          <circle cx="32" cy="32" r="12" fill="rgba(56,189,248,0.2)" stroke="#7dd3fc" stroke-width="1.5"/>
+          <circle cx="32" cy="32" r="4.5" fill="#e0f2fe"/>
+        </svg>
+      `;
+    }
+    // Default: Investigator Silhouette with Aerodynamic Curved Visor
+    return `
+      <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M10 60 C13 46, 21 42, 32 42 C43 42, 51 46, 54 60 Z" fill="#0f172a" stroke="#38bdf8" stroke-width="1.2" stroke-opacity="0.45"/>
+        <path d="M18 39 L22 28 L42 28 L46 39 Z" fill="#1e293b"/>
+        <path d="M19 26 C18 14, 26 10, 33 10 C41 10, 46 15, 46 25 C46 33, 40 38, 32 38 C24 38, 19 33, 19 26 Z" fill="#334155" stroke="#94a3b8" stroke-width="1.2"/>
+        <!-- Sleek Glowing Cyan Visor -->
+        <path d="M24 22 Q35 19 45 23 Q44 27 34 27 Q25 26 24 22 Z" fill="#38bdf8"/>
+        <ellipse cx="36" cy="23.5" rx="4" ry="1" fill="#ffffff" fill-opacity="0.9"/>
+      </svg>
+    `;
   }
 
   private bindEvents(): void {
@@ -157,6 +213,7 @@ export class DialogueModal {
     this.show();
 
     const speakerEl = document.getElementById('dlg-speaker-name');
+    const portraitEl = document.getElementById('dlg-portrait-frame');
     const enEl = document.getElementById('dlg-text-en');
     const thEl = document.getElementById('dlg-text-th');
     const choicesEl = document.getElementById('dlg-choices-container');
@@ -169,6 +226,10 @@ export class DialogueModal {
 
     if (speakerEl) {
       speakerEl.textContent = line.speakerDisplayName || line.speaker.toUpperCase();
+    }
+
+    if (portraitEl) {
+      portraitEl.innerHTML = this.getPortraitSVG(line.speaker);
     }
 
     const settings = saveManager.load().settings;
@@ -231,10 +292,10 @@ export class DialogueModal {
       const btn = document.createElement('button');
       btn.className = 'interactive-element';
       btn.style.cssText = `
-        background: rgba(15, 23, 42, 0.8);
-        border: 1px solid rgba(56, 189, 248, 0.35);
-        border-radius: 8px;
-        padding: 10px 14px;
+        background: linear-gradient(135deg, rgba(15, 23, 42, 0.72) 0%, rgba(7, 12, 24, 0.88) 100%);
+        border: 1px solid rgba(56, 189, 248, 0.28);
+        border-radius: 14px;
+        padding: 11px 16px;
         color: #f8fafc;
         font-family: 'Outfit', sans-serif;
         font-size: 14px;
@@ -243,6 +304,7 @@ export class DialogueModal {
         display: flex;
         justify-content: space-between;
         align-items: center;
+        box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
         transition: all 0.2s ease;
       `;
 
@@ -255,14 +317,14 @@ export class DialogueModal {
       `;
 
       btn.addEventListener('mouseenter', () => {
-        btn.style.background = 'rgba(14, 116, 144, 0.4)';
-        btn.style.borderColor = '#38bdf8';
+        btn.style.background = 'linear-gradient(135deg, rgba(14, 116, 144, 0.45) 0%, rgba(15, 23, 42, 0.9) 100%)';
+        btn.style.borderColor = 'rgba(56, 189, 248, 0.75)';
         audioManager.playSynthesizedSFX('click');
       });
 
       btn.addEventListener('mouseleave', () => {
-        btn.style.background = 'rgba(15, 23, 42, 0.8)';
-        btn.style.borderColor = 'rgba(56, 189, 248, 0.35)';
+        btn.style.background = 'linear-gradient(135deg, rgba(15, 23, 42, 0.72) 0%, rgba(7, 12, 24, 0.88) 100%)';
+        btn.style.borderColor = 'rgba(56, 189, 248, 0.28)';
       });
 
       btn.addEventListener('click', (e) => {

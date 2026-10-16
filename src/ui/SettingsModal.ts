@@ -88,20 +88,20 @@ export class SettingsModal {
     const { audio, subtitles } = save.settings;
 
     this.rootEl.innerHTML = `
-      <div style="width: min(540px, 94vw); background: rgba(13, 20, 32, 0.98); border: 1.5px solid rgba(56, 189, 248, 0.45); border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,0.9), 0 0 35px rgba(56, 189, 248, 0.15); display: flex; flex-direction: column; overflow: hidden;">
+      <div style="width: min(540px, 94vw); background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(3, 7, 18, 0.90) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; overflow: hidden;">
         <!-- Header -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 22px; background: rgba(15, 23, 42, 0.9); border-bottom: 1px solid rgba(148, 163, 184, 0.2);">
-          <div style="font-family: 'JetBrains Mono', monospace; font-size: 15px; font-weight: 700; color: #38bdf8; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: rgba(15, 23, 42, 0.55); border-bottom: 1px solid rgba(56, 189, 248, 0.16);">
+          <div style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; color: #38bdf8; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px;">
             <span>⚙</span>
             <span>SYSTEM CONFIGURATION</span>
           </div>
-          <button id="settings-btn-close" class="interactive-element" style="background: transparent; border: none; color: #94a3b8; font-size: 18px; font-weight: bold; cursor: pointer; padding: 2px 6px;">
+          <button id="settings-btn-close" class="interactive-element" style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 50%; width: 30px; height: 30px; color: #94a3b8; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">
             ✕
           </button>
         </div>
 
         <!-- Settings Options Body -->
-        <div style="padding: 22px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto;">
+        <div style="padding: 24px; display: flex; flex-direction: column; gap: 18px; overflow-y: auto;">
           <!-- Audio Section -->
           <div style="display: flex; flex-direction: column; gap: 12px;">
             <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; color: #38bdf8; letter-spacing: 0.08em;">
@@ -122,7 +122,7 @@ export class SettingsModal {
                 <div style="font-family: 'Outfit', sans-serif; font-size: 14px; color: #f8fafc; font-weight: 500;">Mute All Audio</div>
                 <div style="font-size: 11px; color: #94a3b8;">Disable all SFX and background drone</div>
               </div>
-              <button id="set-btn-mute" class="interactive-element" style="background: ${audio.muted ? '#ef4444' : 'rgba(30, 41, 59, 0.8)'}; border: 1px solid rgba(148, 163, 184, 0.3); color: #f8fafc; border-radius: 6px; padding: 6px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer;">
+              <button id="set-btn-mute" class="interactive-element" style="background: ${audio.muted ? '#ef4444' : 'rgba(30, 41, 59, 0.7)'}; border: 1px solid rgba(148, 163, 184, 0.3); color: #f8fafc; border-radius: 999px; padding: 6px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer;">
                 ${audio.muted ? 'MUTED' : 'UNMUTED'}
               </button>
             </div>
@@ -141,7 +141,7 @@ export class SettingsModal {
                 <div style="font-family: 'Outfit', sans-serif; font-size: 14px; color: #f8fafc; font-weight: 500;">Thai Translations (แปลไทย)</div>
                 <div style="font-size: 11px; color: #94a3b8;">Show Thai explanations alongside English text</div>
               </div>
-              <button id="set-btn-thai" class="interactive-element" style="background: ${subtitles.showThaiTranslations ? '#0284c7' : 'rgba(30, 41, 59, 0.8)'}; border: 1px solid rgba(148, 163, 184, 0.3); color: #f8fafc; border-radius: 6px; padding: 6px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer;">
+              <button id="set-btn-thai" class="interactive-element" style="background: ${subtitles.showThaiTranslations ? '#0284c7' : 'rgba(30, 41, 59, 0.7)'}; border: 1px solid rgba(148, 163, 184, 0.3); color: #f8fafc; border-radius: 999px; padding: 6px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer;">
                 ${subtitles.showThaiTranslations ? 'ENABLED' : 'DISABLED'}
               </button>
             </div>
@@ -152,7 +152,7 @@ export class SettingsModal {
                 <div style="font-family: 'Outfit', sans-serif; font-size: 14px; color: #f8fafc; font-weight: 500;">Text Typewriter Speed</div>
                 <div style="font-size: 11px; color: #94a3b8;">Subtitle dialogue reveal rate</div>
               </div>
-              <select id="set-sel-speed" class="interactive-element" style="background: rgba(15, 23, 42, 0.9); border: 1px solid rgba(56, 189, 248, 0.4); color: #f8fafc; border-radius: 6px; padding: 6px 10px; font-family: 'Outfit', sans-serif; font-size: 12px; cursor: pointer;">
+              <select id="set-sel-speed" class="interactive-element" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(56, 189, 248, 0.35); color: #f8fafc; border-radius: 999px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 12px; cursor: pointer;">
                 <option value="40" ${subtitles.textSpeedMs >= 35 ? 'selected' : ''}>Slow (40ms)</option>
                 <option value="20" ${subtitles.textSpeedMs >= 15 && subtitles.textSpeedMs < 35 ? 'selected' : ''}>Normal (20ms)</option>
                 <option value="8" ${subtitles.textSpeedMs < 15 ? 'selected' : ''}>Instant / Fast (8ms)</option>
@@ -172,7 +172,7 @@ export class SettingsModal {
                 <div style="font-family: 'Outfit', sans-serif; font-size: 13px; color: #e2e8f0;">Reset Chapter 1 Progress</div>
                 <div style="font-size: 11px; color: #94a3b8;">Clear clues and restart from the platform awakening</div>
               </div>
-              <button id="set-btn-reset-save" class="interactive-element" style="background: rgba(127, 29, 29, 0.5); border: 1px solid #ef4444; color: #fca5a5; border-radius: 6px; padding: 6px 12px; font-family: 'JetBrains Mono', monospace; font-size: 11px; cursor: pointer;">
+              <button id="set-btn-reset-save" class="interactive-element" style="background: rgba(127, 29, 29, 0.45); border: 1px solid rgba(239, 68, 68, 0.55); color: #fca5a5; border-radius: 999px; padding: 6px 14px; font-family: 'JetBrains Mono', monospace; font-size: 11px; cursor: pointer;">
                 RESET PROGRESS
               </button>
             </div>
@@ -180,8 +180,8 @@ export class SettingsModal {
         </div>
 
         <!-- Footer -->
-        <div style="padding: 14px 22px; background: rgba(15, 23, 42, 0.9); border-top: 1px solid rgba(148, 163, 184, 0.2); display: flex; justify-content: flex-end;">
-          <button id="settings-btn-done" class="interactive-element" style="background: linear-gradient(135deg, #0284c7, #0d9488); border: 1px solid #38bdf8; color: #ffffff; border-radius: 6px; padding: 8px 20px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer;">
+        <div style="padding: 14px 24px; background: rgba(15, 23, 42, 0.55); border-top: 1px solid rgba(56, 189, 248, 0.14); display: flex; justify-content: flex-end;">
+          <button id="settings-btn-done" class="interactive-element" style="background: linear-gradient(135deg, #0284c7, #0d9488); border: 1px solid rgba(186, 230, 253, 0.5); color: #ffffff; border-radius: 999px; padding: 8px 22px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 600; cursor: pointer; box-shadow: 0 6px 18px rgba(56, 189, 248, 0.25);">
             APPLY & CLOSE
           </button>
         </div>

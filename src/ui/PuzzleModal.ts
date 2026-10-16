@@ -240,7 +240,7 @@ export class PuzzleModal {
           data-opt-id="${opt.id}"
           class="puzzle-opt-btn interactive-element"
           ${disabledAttr}
-          style="width: 100%; background: ${bgCol}; border: 1.5px solid ${borderCol}; border-radius: 10px; padding: 14px 16px; text-align: left; cursor: ${cursorStyle}; opacity: ${opacityStyle}; display: flex; flex-direction: column; gap: 4px; transition: all 0.2s;"
+          style="width: 100%; background: ${bgCol}; border: 1px solid ${borderCol}; border-radius: 16px; padding: 14px 18px; text-align: left; cursor: ${cursorStyle}; opacity: ${opacityStyle}; display: flex; flex-direction: column; gap: 4px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08); transition: all 0.2s;"
         >
           <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px;">
             <span style="font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 600; color: #f8fafc;">
@@ -249,7 +249,7 @@ export class PuzzleModal {
             ${statusBadge}
           </div>
           ${this.showThaiScaffolding && opt.textTh && opt.textTh !== opt.textEn ? `
-            <div style="font-size: 12px; color: #94a3b8;">
+            <div style="font-size: 12.5px; color: #94a3b8;">
               ${opt.textTh}
             </div>
           ` : ''}
@@ -261,7 +261,7 @@ export class PuzzleModal {
     let feedbackHtml = '';
     if (this.lastResult) {
       const res = this.lastResult;
-      const fbBorder = res.isCorrect ? '#22c55e' : '#f59e0b';
+      const fbBorder = res.isCorrect ? 'rgba(34, 197, 94, 0.45)' : 'rgba(245, 158, 11, 0.45)';
       const fbBg = res.isCorrect ? 'rgba(20, 83, 45, 0.35)' : 'rgba(120, 53, 15, 0.3)';
       const fbHeader = res.isCorrect
         ? '✔ ANALYSIS VERIFIED — CORRECT INTERPRETATION'
@@ -274,7 +274,7 @@ export class PuzzleModal {
         const words = p.relatedVocabIds
           .map((id) => learningEngine.getVocabularyItem(id))
           .filter(Boolean)
-          .map((v) => `<span style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.4); color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 2px 8px; border-radius: 4px;">+${v!.word} (${v!.meaningTh})</span>`)
+          .map((v) => `<span style="background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.35); color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 11px; padding: 3px 10px; border-radius: 999px;">+${v!.word} (${v!.meaningTh})</span>`)
           .join(' ');
 
         vocabBadgesHtml = `
@@ -286,7 +286,7 @@ export class PuzzleModal {
       }
 
       feedbackHtml = `
-        <div style="background: ${fbBg}; border: 1.5px solid ${fbBorder}; border-radius: 10px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="background: ${fbBg}; border: 1px solid ${fbBorder}; border-radius: 16px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);">
           <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 700; color: ${fbHeaderCol}; letter-spacing: 0.05em;">
             ${fbHeader}
           </div>
@@ -297,7 +297,7 @@ export class PuzzleModal {
             💡 คำอธิบาย: ${res.explanationTh}
           </div>
           ${!res.isCorrect && rule ? `
-            <div style="margin-top: 6px; padding: 8px 12px; background: rgba(15, 23, 42, 0.75); border-left: 3px solid #38bdf8; border-radius: 4px; font-size: 12px; color: #e2e8f0;">
+            <div style="margin-top: 6px; padding: 10px 14px; background: rgba(15, 23, 42, 0.72); border-left: 3px solid #38bdf8; border-radius: 10px; font-size: 12px; color: #e2e8f0;">
               <strong style="color: #38bdf8;">Grammar Rule (${rule.titleEn}):</strong> <code>${rule.formula}</code>
               <div style="color: #94a3b8; margin-top: 2px;">${rule.explanationTh}</div>
             </div>
@@ -311,7 +311,7 @@ export class PuzzleModal {
     let hintHtml = '';
     if (this.activeHint && !this.isSolved) {
       hintHtml = `
-        <div style="background: rgba(14, 116, 144, 0.25); border: 1px solid rgba(56, 189, 248, 0.45); border-radius: 8px; padding: 10px 14px; display: flex; flex-direction: column; gap: 4px;">
+        <div style="background: rgba(14, 116, 144, 0.22); border: 1px solid rgba(56, 189, 248, 0.35); border-radius: 14px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px;">
           <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #38bdf8; font-weight: 700;">
             💡 ADAPTIVE HINT (LEVEL ${this.activeHint.level})
           </div>
@@ -324,14 +324,14 @@ export class PuzzleModal {
     }
 
     this.rootEl.innerHTML = `
-      <div style="width: min(860px, 95vw); max-height: 92vh; background: rgba(10, 16, 28, 0.96); border: 1.5px solid ${badgeColor}; border-radius: 14px; box-shadow: 0 24px 70px rgba(0, 0, 0, 0.9), 0 0 35px rgba(56, 189, 248, 0.15); display: flex; flex-direction: column; overflow: hidden;">
+      <div style="width: min(860px, 95vw); max-height: 92vh; background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(3, 7, 18, 0.90) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; overflow: hidden;">
         <!-- Top Bar -->
-        <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 22px; background: rgba(15, 23, 42, 0.9); border-bottom: 1px solid rgba(148, 163, 184, 0.2); flex-wrap: wrap; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 24px; background: rgba(15, 23, 42, 0.55); border-bottom: 1px solid rgba(56, 189, 248, 0.15); flex-wrap: wrap; gap: 8px;">
           <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
-            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: #020617; background: ${badgeColor}; padding: 3px 8px; border-radius: 4px;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: #020617; background: ${badgeColor}; padding: 4px 10px; border-radius: 999px;">
               ${typeLabel}
             </span>
-            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.4); padding: 2px 8px; border-radius: 4px;">
+            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.35); padding: 3px 10px; border-radius: 999px;">
               CEFR ${p.difficulty || 'A1–A2'}
             </span>
             <span style="font-size: 12px; color: #94a3b8;">
@@ -341,15 +341,15 @@ export class PuzzleModal {
 
           <div style="display: flex; align-items: center; gap: 8px;">
             ${!this.isSolved ? `
-              <button id="puzzle-btn-hint" class="interactive-element" style="background: rgba(245, 158, 11, 0.15); border: 1px solid #f59e0b; color: #fbbf24; border-radius: 6px; padding: 5px 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; cursor: pointer;">
+              <button id="puzzle-btn-hint" class="interactive-element" style="background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.45); color: #fbbf24; border-radius: 999px; padding: 5px 12px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 11.5px; cursor: pointer;">
                 💡 Hint [H]
               </button>
             ` : ''}
-            <button id="puzzle-btn-thai" class="interactive-element" style="background: rgba(30, 41, 59, 0.8); border: 1px solid rgba(148, 163, 184, 0.3); color: ${this.showThaiScaffolding ? '#38bdf8' : '#94a3b8'}; border-radius: 6px; padding: 5px 10px; font-family: 'JetBrains Mono', monospace; font-size: 11px; cursor: pointer;">
+            <button id="puzzle-btn-thai" class="interactive-element" style="background: rgba(30, 41, 59, 0.65); border: 1px solid rgba(148, 163, 184, 0.25); color: ${this.showThaiScaffolding ? '#38bdf8' : '#94a3b8'}; border-radius: 999px; padding: 5px 12px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 11.5px; cursor: pointer;">
               🇹🇭 แปลไทย: ${this.showThaiScaffolding ? 'ON' : 'OFF'}
             </button>
             ${!this.isSolved ? `
-              <button id="puzzle-btn-close" class="interactive-element" title="Close [Esc]" style="background: transparent; border: none; color: #94a3b8; font-size: 18px; font-weight: bold; cursor: pointer; padding: 2px 6px;">
+              <button id="puzzle-btn-close" class="interactive-element" title="Close [Esc]" style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 50%; width: 30px; height: 30px; color: #94a3b8; font-size: 14px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center;">
                 ✕
               </button>
             ` : ''}
@@ -357,28 +357,28 @@ export class PuzzleModal {
         </div>
 
         <!-- Scrollable Content Area -->
-        <div style="padding: 20px 24px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;">
+        <div style="padding: 22px 26px; overflow-y: auto; display: flex; flex-direction: column; gap: 16px;">
           <!-- Title & Immersion Notice -->
           <div style="display: flex; justify-content: space-between; align-items: baseline; flex-wrap: wrap; gap: 8px;">
             <div>
-              <h2 style="font-family: 'Outfit', sans-serif; font-size: 20px; font-weight: 700; color: #f8fafc; margin: 0;">
+              <h2 style="font-family: 'Outfit', sans-serif; font-size: 21px; font-weight: 700; color: #f8fafc; margin: 0;">
                 ${p.titleEn}
               </h2>
               ${this.showThaiScaffolding ? `<div style="font-size: 13px; color: #94a3b8; margin-top: 2px;">${p.titleTh}</div>` : ''}
             </div>
             ${this.immersionModeActive && !this.showThaiScaffolding ? `
-              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #34d399; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 3px 8px; border-radius: 4px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #34d399; background: rgba(16, 185, 129, 0.12); border: 1px solid rgba(16, 185, 129, 0.3); padding: 4px 10px; border-radius: 999px;">
                 ⚡ Immersion Streak: Auto-hints reduced
               </span>
             ` : ''}
           </div>
 
           <!-- Environmental Context Box -->
-          <div style="background: rgba(15, 23, 42, 0.9); border-left: 4px solid ${badgeColor}; border-radius: 6px; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px;">
+          <div style="background: rgba(15, 23, 42, 0.65); border: 1px solid rgba(56, 189, 248, 0.18); border-left: 4px solid ${badgeColor}; border-radius: 16px; padding: 14px 18px; display: flex; flex-direction: column; gap: 6px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);">
             <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #64748b; text-transform: uppercase;">
               ENVIRONMENTAL LOG // STATION 7
             </div>
-            <div style="font-family: 'Outfit', sans-serif; font-size: 15px; color: #e2e8f0; line-height: 1.5;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 15px; color: #e2e8f0; line-height: 1.55;">
               ${p.contextEn}
             </div>
             ${this.showThaiScaffolding ? `
@@ -414,7 +414,7 @@ export class PuzzleModal {
           <!-- Proceed Button when Solved -->
           ${this.isSolved ? `
             <div style="display: flex; justify-content: flex-end; margin-top: 4px;">
-              <button id="puzzle-btn-proceed" class="interactive-element" style="background: linear-gradient(135deg, #0284c7, #0d9488); border: 1px solid #38bdf8; color: #ffffff; border-radius: 8px; padding: 12px 24px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 20px rgba(56, 189, 248, 0.35);">
+              <button id="puzzle-btn-proceed" class="interactive-element" style="background: linear-gradient(135deg, #0284c7, #0d9488); border: 1px solid rgba(186, 230, 253, 0.5); color: #ffffff; border-radius: 999px; padding: 12px 26px; font-family: 'Outfit', sans-serif; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 25px rgba(56, 189, 248, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.25);">
                 CONFIRM & PROCEED [Enter / Space] ➔
               </button>
             </div>

@@ -43,35 +43,35 @@ export class JournalModal {
     `;
 
     wrapper.innerHTML = `
-      <div style="width: min(900px, 94vw); height: min(620px, 88vh); background: rgba(13, 20, 32, 0.95); border: 1.5px solid rgba(56, 189, 248, 0.45); border-radius: 14px; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(56, 189, 248, 0.15); display: flex; flex-direction: column; overflow: hidden;">
+      <div style="width: min(900px, 94vw); height: min(620px, 88vh); background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(3, 7, 18, 0.90) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; overflow: hidden;">
         <!-- Header with Tabs & Close Button -->
-        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 14px 20px; border-bottom: 1px solid rgba(56, 189, 248, 0.2); background: rgba(15, 23, 42, 0.8);">
-          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 12px;">
-            <div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 700; color: #38bdf8; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; padding: 16px 24px; border-bottom: 1px solid rgba(56, 189, 248, 0.16); background: rgba(15, 23, 42, 0.55);">
+          <div style="display: flex; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <div style="font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; color: #38bdf8; letter-spacing: 0.08em; display: flex; align-items: center; gap: 8px;">
               <span>📁</span>
               <span>INVESTIGATOR'S FIELD LOG</span>
             </div>
             <!-- Navigation Tabs -->
-            <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-              <button id="jtab-btn-evidence" class="interactive-element" style="background: rgba(14, 116, 144, 0.5); border: 1px solid #38bdf8; color: #f8fafc; border-radius: 6px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
+            <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+              <button id="jtab-btn-evidence" class="interactive-element" style="background: rgba(14, 116, 144, 0.5); border: 1px solid #38bdf8; color: #f8fafc; border-radius: 999px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                 Evidence (<span id="jtab-evidence-count">0/3</span>)
               </button>
-              <button id="jtab-btn-vocab" class="interactive-element" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; border-radius: 6px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
+              <button id="jtab-btn-vocab" class="interactive-element" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; border-radius: 999px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                 Vocabulary Bank
               </button>
-              <button id="jtab-btn-objectives" class="interactive-element" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; border-radius: 6px; padding: 6px 12px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer;">
+              <button id="jtab-btn-objectives" class="interactive-element" style="background: rgba(30, 41, 59, 0.6); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; border-radius: 999px; padding: 6px 14px; font-family: 'Outfit', sans-serif; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
                 Missions & Steps
               </button>
             </div>
           </div>
           <!-- Close Button -->
-          <button id="journal-btn-close" aria-label="Close Field Log" class="interactive-element" style="background: transparent; border: none; color: #94a3b8; font-size: 20px; font-weight: bold; cursor: pointer; padding: 4px 8px; border-radius: 6px; transition: all 0.2s;">
+          <button id="journal-btn-close" aria-label="Close Field Log" class="interactive-element" style="background: rgba(15, 23, 42, 0.5); border: 1px solid rgba(148, 163, 184, 0.2); color: #94a3b8; width: 32px; height: 32px; font-size: 15px; font-weight: bold; cursor: pointer; border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: all 0.2s;">
             ✕
           </button>
         </div>
 
         <!-- Scrollable Body Content -->
-        <div id="journal-body-content" style="flex: 1; padding: 20px; overflow-y: auto; box-sizing: border-box;">
+        <div id="journal-body-content" style="flex: 1; padding: 22px 24px; overflow-y: auto; box-sizing: border-box;">
           <!-- Injected dynamically via renderTabContent -->
         </div>
       </div>
@@ -191,31 +191,31 @@ export class JournalModal {
 
       if (isCollected) {
         html += `
-          <div style="background: rgba(15, 23, 42, 0.9); border: 1.5px solid rgba(56, 189, 248, 0.4); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; gap: 8px;">
+          <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.72) 0%, rgba(7, 12, 24, 0.88) 100%); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; gap: 8px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);">
             <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; color: #38bdf8; padding: 2px 8px; background: rgba(56, 189, 248, 0.15); border-radius: 4px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; text-transform: uppercase; color: #38bdf8; padding: 3px 10px; background: rgba(56, 189, 248, 0.15); border-radius: 999px;">
                 ${clue.category}
               </span>
-              <span style="color: #22c55e; font-size: 14px;">✔ Discovered</span>
+              <span style="color: #4ade80; font-size: 13px; font-weight: 600;">✔ Discovered</span>
             </div>
             <h3 style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; color: #f8fafc; margin: 4px 0 0 0;">
               ${clue.titleEn}
             </h3>
             <p style="font-size: 12px; color: #94a3b8; margin: 0;">${clue.titleTh}</p>
-            <p style="font-family: 'Outfit', sans-serif; font-size: 13px; color: #cbd5e1; line-height: 1.4; margin: 6px 0;">
+            <p style="font-family: 'Outfit', sans-serif; font-size: 13.5px; color: #cbd5e1; line-height: 1.45; margin: 6px 0;">
               "${clue.descriptionEn}"
             </p>
-            <p style="font-size: 12px; color: #64748b; line-height: 1.3; margin: 0;">
+            <p style="font-size: 12px; color: #64748b; line-height: 1.35; margin: 0;">
               ${clue.descriptionTh}
             </p>
-            <div style="margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(148, 163, 184, 0.15); font-size: 11px; color: #94a3b8;">
+            <div style="margin-top: auto; padding-top: 8px; border-top: 1px solid rgba(148, 163, 184, 0.14); font-size: 11px; color: #94a3b8;">
               📍 <span style="color: #e2e8f0;">${clue.locationEn}</span>
             </div>
           </div>
         `;
       } else {
         html += `
-          <div style="background: rgba(10, 16, 26, 0.6); border: 1px dashed rgba(148, 163, 184, 0.25); border-radius: 10px; padding: 16px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 180px; text-align: center; gap: 8px;">
+          <div style="background: rgba(10, 16, 26, 0.5); border: 1px dashed rgba(148, 163, 184, 0.22); border-radius: 18px; padding: 18px; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 180px; text-align: center; gap: 8px;">
             <span style="font-size: 32px; opacity: 0.3;">🔒</span>
             <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #64748b; letter-spacing: 0.05em;">
               UNDISCOVERED CLUE
@@ -255,14 +255,14 @@ export class JournalModal {
           : `<span style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 10px;">📖 Reference</span>`);
 
       html += `
-        <div style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid ${isMastered ? 'rgba(74, 222, 128, 0.35)' : 'rgba(148, 163, 184, 0.2)'}; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.72) 0%, rgba(7, 12, 24, 0.88) 100%); border: 1px solid ${isMastered ? 'rgba(74, 222, 128, 0.35)' : 'rgba(56, 189, 248, 0.2)'}; border-radius: 16px; padding: 16px; display: flex; flex-direction: column; gap: 6px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);">
           <div style="display: flex; justify-content: space-between; align-items: baseline;">
             <span style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; color: #38bdf8;">
               ${v.word}
             </span>
             <div style="display: flex; align-items: center; gap: 6px;">
               ${statusBadge}
-              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 4px;">
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 2px 8px; border-radius: 999px;">
                 ${v.partOfSpeech}
               </span>
             </div>
@@ -302,8 +302,8 @@ export class JournalModal {
       const isCurrent = objectiveTracker.getCurrentObjective().id === obj.id;
 
       html += `
-        <div style="background: ${isCurrent ? 'rgba(14, 116, 144, 0.25)' : 'rgba(15, 23, 42, 0.8)'}; border: 1.5px solid ${isCurrent ? '#38bdf8' : (isCompleted ? '#22c55e' : 'rgba(148, 163, 184, 0.2)')}; border-radius: 8px; padding: 14px 18px; display: flex; align-items: flex-start; gap: 14px;">
-          <div style="width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; margin-top: 2px; ${isCompleted ? 'background: #22c55e; color: #022c22;' : (isCurrent ? 'background: #38bdf8; color: #082f49;' : 'background: rgba(148, 163, 184, 0.2); color: #94a3b8;')}">
+        <div style="background: ${isCurrent ? 'rgba(14, 116, 144, 0.25)' : 'rgba(15, 23, 42, 0.7)'}; border: 1px solid ${isCurrent ? 'rgba(56, 189, 248, 0.6)' : (isCompleted ? 'rgba(34, 197, 94, 0.4)' : 'rgba(148, 163, 184, 0.2)')}; border-radius: 16px; padding: 14px 18px; display: flex; align-items: flex-start; gap: 14px; box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.06);">
+          <div style="width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 12px; margin-top: 2px; ${isCompleted ? 'background: #22c55e; color: #022c22;' : (isCurrent ? 'background: #38bdf8; color: #082f49;' : 'background: rgba(148, 163, 184, 0.2); color: #94a3b8;')}">
             ${isCompleted ? '✔' : idx + 1}
           </div>
           <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">

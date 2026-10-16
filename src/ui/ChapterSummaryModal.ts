@@ -123,14 +123,14 @@ export class ChapterSummaryModal {
     `;
 
     this.rootEl.innerHTML = `
-      <div style="width: min(640px, 94vw); max-height: 90vh; background: rgba(13, 20, 32, 0.98); border: 1.5px solid rgba(56, 189, 248, 0.5); border-radius: 14px; box-shadow: 0 24px 60px rgba(0,0,0,0.9), 0 0 40px rgba(56, 189, 248, 0.2); display: flex; flex-direction: column; overflow: hidden;">
+      <div style="width: min(640px, 94vw); max-height: 90vh; background: linear-gradient(135deg, rgba(15, 23, 42, 0.75) 0%, rgba(3, 7, 18, 0.90) 100%); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 24px; box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1); display: flex; flex-direction: column; overflow: hidden;">
         
         <!-- Header -->
-        <div style="padding: 24px 24px 16px 24px; background: linear-gradient(180deg, rgba(15, 23, 42, 0.95) 0%, rgba(13, 20, 32, 0.95) 100%); border-bottom: 1px solid rgba(148, 163, 184, 0.2); text-align: center;">
+        <div style="padding: 24px 24px 16px 24px; background: rgba(15, 23, 42, 0.55); border-bottom: 1px solid rgba(56, 189, 248, 0.16); text-align: center;">
           <div style="font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: #34d399; text-transform: uppercase;">
             ✔ CHAPTER CONCLUDED // ESCAPE SUCCESSFUL
           </div>
-          <h2 style="font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 800; color: #f8fafc; margin: 6px 0 2px 0;">
+          <h2 style="font-family: 'Outfit', sans-serif; font-size: 24px; font-weight: 800; color: #f8fafc; margin: 6px 0 2px 0;">
             CHAPTER 1: THE LAST STATION
           </h2>
           <div style="font-family: 'Outfit', sans-serif; font-size: 13px; color: #94a3b8;">
@@ -139,36 +139,36 @@ export class ChapterSummaryModal {
         </div>
 
         <!-- Body / Scrollable Content -->
-        <div style="padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;">
+        <div style="padding: 22px 24px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;">
           <!-- Narrative Synopsis -->
-          <div style="font-family: 'Outfit', sans-serif; font-size: 13px; color: #cbd5e1; line-height: 1.6; background: rgba(15, 23, 42, 0.6); border-left: 3px solid #38bdf8; padding: 10px 14px; border-radius: 0 6px 6px 0;">
+          <div style="font-family: 'Outfit', sans-serif; font-size: 13.5px; color: #cbd5e1; line-height: 1.6; background: rgba(15, 23, 42, 0.6); border-left: 3px solid #38bdf8; padding: 12px 16px; border-radius: 14px;">
             The pneumatic seals of Sector B hiss open into the cool subterranean air. Mira's transmission guides your path as the abandoned platforms of Station 7 recede into darkness. You have survived the awakening and secured vital evidence.
           </div>
 
           <!-- Stats Grid -->
           <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px;">
-            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="background: rgba(15, 23, 42, 0.68); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 12px 10px; text-align: center;">
               <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: #38bdf8;">
                 ${summary.evidenceRatioText}
               </div>
               <div style="font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-top: 2px;">Clues Found</div>
             </div>
 
-            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="background: rgba(15, 23, 42, 0.68); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 12px 10px; text-align: center;">
               <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: #38bdf8;">
                 ${summary.completedPuzzlesCount} / ${summary.totalPuzzles}
               </div>
               <div style="font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-top: 2px;">Puzzles Solved</div>
             </div>
 
-            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="background: rgba(15, 23, 42, 0.68); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 12px 10px; text-align: center;">
               <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: ${summary.accuracyRate >= 80 ? '#34d399' : '#f59e0b'};">
                 ${summary.accuracyRate}%
               </div>
               <div style="font-size: 10px; color: #94a3b8; text-transform: uppercase; margin-top: 2px;">Accuracy</div>
             </div>
 
-            <div style="background: rgba(15, 23, 42, 0.7); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: 8px; padding: 10px; text-align: center;">
+            <div style="background: rgba(15, 23, 42, 0.68); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: 16px; padding: 12px 10px; text-align: center;">
               <div style="font-family: 'JetBrains Mono', monospace; font-size: 18px; font-weight: 700; color: #f8fafc;">
                 ${summary.totalHintsRequested}
               </div>
@@ -201,12 +201,12 @@ export class ChapterSummaryModal {
         </div>
 
         <!-- Footer / Action Buttons -->
-        <div style="padding: 16px 24px; background: rgba(15, 23, 42, 0.9); border-top: 1px solid rgba(148, 163, 184, 0.2); display: flex; justify-content: space-between; align-items: center; gap: 12px;">
-          <button id="summary-btn-replay" class="interactive-element" style="background: rgba(30, 41, 59, 0.85); border: 1px solid rgba(148, 163, 184, 0.3); color: #f8fafc; border-radius: 6px; padding: 10px 16px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.2s;">
+        <div style="padding: 16px 24px; background: rgba(15, 23, 42, 0.55); border-top: 1px solid rgba(56, 189, 248, 0.14); display: flex; justify-content: space-between; align-items: center; gap: 12px;">
+          <button id="summary-btn-replay" class="interactive-element" style="background: rgba(30, 41, 59, 0.72); border: 1px solid rgba(148, 163, 184, 0.3); color: #f8fafc; border-radius: 999px; padding: 10px 18px; font-family: 'Outfit', sans-serif; font-weight: 600; font-size: 12.5px; cursor: pointer; transition: all 0.2s;">
             ⟳ REPLAY CHAPTER 1
           </button>
 
-          <button id="summary-btn-title" class="interactive-element" style="background: linear-gradient(135deg, #0284c7, #0d9488); border: 1px solid #38bdf8; color: #ffffff; border-radius: 6px; padding: 10px 22px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 0 16px rgba(56, 189, 248, 0.3);">
+          <button id="summary-btn-title" class="interactive-element" style="background: linear-gradient(135deg, #0284c7, #0d9488); border: 1px solid rgba(186, 230, 253, 0.5); color: #ffffff; border-radius: 999px; padding: 10px 24px; font-family: 'Outfit', sans-serif; font-size: 14px; font-weight: 700; cursor: pointer; transition: all 0.2s; box-shadow: 0 8px 22px rgba(56, 189, 248, 0.3);">
             RETURN TO TITLE MENU
           </button>
         </div>
