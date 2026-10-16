@@ -6,16 +6,18 @@ import { StationScene } from './game/StationScene';
 import { HUDOverlay } from './ui/HUDOverlay';
 import { DialogueModal } from './ui/DialogueModal';
 import { JournalModal } from './ui/JournalModal';
+import { PuzzleModal } from './ui/PuzzleModal';
 import { audioManager } from './engine/AudioManager';
 import { saveManager } from './persistence/SaveManager';
 import { dialogueRunner } from './systems/DialogueRunner';
 import { evidenceManager } from './systems/EvidenceManager';
 import { objectiveTracker } from './systems/ObjectiveTracker';
+import { learningEngine } from './learning/LearningEngine';
 import { DialogueTree } from './types/narrative';
 import miraRadioData from '../content/dialogues/mira_radio.json';
 
 console.log(
-  '%c ECHOES: THE LAST SIGNAL %c Checkpoint 3 Narrative & Evidence Engine Active ',
+  '%c ECHOES: THE LAST SIGNAL %c Checkpoint 4 Contextual English Puzzles & Learning Engine Active ',
   'background: #0e7490; color: #fff; font-weight: bold;',
   'background: #0f172a; color: #38bdf8;'
 );
@@ -24,11 +26,13 @@ console.log(
 let hud: HUDOverlay | null = null;
 let dialogueModal: DialogueModal | null = null;
 let journalModal: JournalModal | null = null;
+let puzzleModal: PuzzleModal | null = null;
 
 try {
   hud = new HUDOverlay('ui-container');
   dialogueModal = new DialogueModal('ui-container');
   journalModal = new JournalModal('ui-container');
+  puzzleModal = new PuzzleModal('ui-container');
 } catch (e) {
   console.warn('[main] DOM UI overlay initialization warning:', e);
 }
@@ -80,30 +84,54 @@ window.addEventListener('game:interaction', (e: Event) => {
   const customEvent = e as CustomEvent<{ target: { id: string; name: string } }>;
   const targetId = customEvent.detail.target.id;
 
+  // Prevent overlapping modal triggers
+  if (
+    dialogueModal?.getIsVisible() ||
+    journalModal?.getIsVisible() ||
+    puzzleModal?.getIsVisible()
+  ) {
+    return;
+  }
+
   switch (targetId) {
     case 'target_radio':
       if (!objectiveTracker.isObjectiveCompleted('obj_answer_mira')) {
         dialogueRunner.startDialogue(miraRadioData as unknown as DialogueTree);
       } else {
         audioManager.playSynthesizedSFX('radio_on');
-        hud?.showToast('Mira: "I copy you. Check the station signs and find Sector B Gate."', 3600);
+        const activeObj = objectiveTracker.getCurrentObjective();
+        hud?.showToast(`Mira (Radio): "Stay focused. Next step: ${activeObj.titleEn}."`, 3600);
       }
       break;
 
     case 'target_signpost':
-      if (objectiveTracker.isObjectiveCompleted('obj_answer_mira')) {
-        hud?.showToast('Sign reads: "SECTOR B GATE: Located directly between Platform 1 and Maintenance Booth."', 4000);
-      } else {
-        hud?.showToast('The electronic signpost flickers with transit instructions.', 3000);
-      }
+      puzzleModal?.openPuzzle('puzzle_station_sign_nav', () => {
+        objectiveTracker.completeObjective('obj_wake_up');
+        objectiveTracker.completeObjective('obj_read_sign');
+        hud?.showToast('Transit Route Verified: Proceed to the Auxiliary Sub-Terminal.', 3800);
+      });
       break;
 
     case 'target_terminal':
-      hud?.showToast('Auxiliary Sub-Terminal: Auxiliary power routing ready for diagnostic check.', 3500);
+      puzzleModal?.openPuzzle('puzzle_terminal_diagnostics', () => {
+        objectiveTracker.completeObjective('obj_wake_up');
+        objectiveTracker.completeObjective('obj_override_terminal');
+        evidenceManager.discoverClue('clue_transit_log');
+        hud?.showToast('Auxiliary Power Restored! Sector B Blast Gate is ready for override.', 4000);
+      });
       break;
 
     case 'target_gate':
-      hud?.showToast('Sector B Blast Gate: [LOCKED] Auxiliary power offline.', 3500);
+      if (!objectiveTracker.isObjectiveCompleted('obj_override_terminal')) {
+        audioManager.playSynthesizedSFX('error');
+        hud?.showToast('Sector B Gate: [POWER OFFLINE] Restore auxiliary power at the Sub-Terminal first.', 3800);
+      } else {
+        puzzleModal?.openPuzzle('puzzle_gate_override', () => {
+          objectiveTracker.completeObjective('obj_escape_station');
+          hud?.showToast('✔ Sector B Blast Gate Unlocked! Exiting Station 7...', 4500);
+          window.dispatchEvent(new CustomEvent('chapter:completed', { detail: { chapter: 1 } }));
+        });
+      }
       break;
   }
 });
@@ -121,7 +149,9 @@ window.addEventListener('error', (event) => {
   evidenceManager,
   objectiveTracker,
   dialogueRunner,
+  learningEngine,
   hud,
   dialogueModal,
-  journalModal
+  journalModal,
+  puzzleModal
 };

@@ -39,6 +39,9 @@ export interface PuzzleItem {
   id: string;
   chapter: number;
   type: PuzzleType;
+  difficulty?: CefrLevel;
+  targetSkill?: string;
+  grammarConcept?: string;
   titleEn: string;
   titleTh: string;
   contextEn: string;
@@ -46,6 +49,7 @@ export interface PuzzleItem {
   instructionEn: string;
   instructionTh: string;
   targetRuleId: string;
+  relatedVocabIds?: string[];
   options: PuzzleOption[];
   hintsEn: string[];
   hintsTh: string[];
@@ -63,11 +67,19 @@ export interface PuzzleEvaluationResult {
   attemptsUsed: number;
   nextHintEn?: string;
   nextHintTh?: string;
+  reduceScaffolding?: boolean;
+}
+
+export interface PuzzleAttemptRecord {
+  attempts: number;
+  firstTryCorrect: boolean;
+  hintCount: number;
+  completed?: boolean;
 }
 
 export interface LearningProgress {
   encounteredVocabIds: string[];
   masteredVocabIds: string[];
   completedPuzzleIds: string[];
-  puzzleAttempts: Record<string, { attempts: number; firstTryCorrect: boolean; hintCount: number }>;
+  puzzleAttempts: Record<string, PuzzleAttemptRecord>;
 }

@@ -1,6 +1,7 @@
 import { evidenceManager } from '../systems/EvidenceManager';
 import { objectiveTracker } from '../systems/ObjectiveTracker';
 import { audioManager } from '../engine/AudioManager';
+import { saveManager } from '../persistence/SaveManager';
 import vocabularyData from '../../content/learning/vocabulary.json';
 import { VocabularyItem } from '../types/learning';
 
@@ -92,7 +93,14 @@ export class JournalModal {
     // Keyboard shortcut [J] to toggle, [Esc] to close
     window.addEventListener('keydown', (e) => {
       if (e.key.toLowerCase() === 'j' && !e.repeat) {
-        // Only toggle if dialogue or puzzle modal isn't open
+        const dlgRoot = document.getElementById('dialogue-modal-root');
+        const puzRoot = document.getElementById('puzzle-modal-root');
+        if (
+          (dlgRoot && dlgRoot.style.display && dlgRoot.style.display !== 'none') ||
+          (puzRoot && puzRoot.style.display && puzRoot.style.display !== 'none')
+        ) {
+          return;
+        }
         this.toggle();
       } else if (e.key === 'Escape' && this.isVisible) {
         this.toggle(false);
@@ -221,25 +229,38 @@ export class JournalModal {
 
   private renderVocabTab(container: HTMLElement): void {
     const vocabList = vocabularyData as VocabularyItem[];
+    const progress = saveManager.load().learningProgress;
 
     let html = `
       <div style="display: flex; flex-direction: column; gap: 12px;">
         <p style="font-family: 'Outfit', sans-serif; font-size: 14px; color: #94a3b8; margin: 0 0 8px 0;">
-          Essential CEFR A1–A2 words discovered across Station 7 signage, radio messages, and terminals:
+          Essential CEFR A1–A2 words discovered across Station 7 signage, radio messages, and terminals (${progress.masteredVocabIds.length}/${vocabList.length} Mastered):
         </p>
         <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 14px;">
     `;
 
     vocabList.forEach((v) => {
+      const isMastered = progress.masteredVocabIds.includes(v.id);
+      const isEncountered = progress.encounteredVocabIds.includes(v.id);
+
+      const statusBadge = isMastered
+        ? `<span style="color: #4ade80; font-family: 'JetBrains Mono', monospace; font-size: 10px;">✔ Mastered</span>`
+        : (isEncountered
+          ? `<span style="color: #38bdf8; font-family: 'JetBrains Mono', monospace; font-size: 10px;">👁 Encountered</span>`
+          : `<span style="color: #64748b; font-family: 'JetBrains Mono', monospace; font-size: 10px;">📖 Reference</span>`);
+
       html += `
-        <div style="background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(148, 163, 184, 0.2); border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px;">
+        <div style="background: rgba(15, 23, 42, 0.85); border: 1.5px solid ${isMastered ? 'rgba(74, 222, 128, 0.35)' : 'rgba(148, 163, 184, 0.2)'}; border-radius: 8px; padding: 14px; display: flex; flex-direction: column; gap: 6px;">
           <div style="display: flex; justify-content: space-between; align-items: baseline;">
             <span style="font-family: 'Outfit', sans-serif; font-size: 16px; font-weight: 700; color: #38bdf8;">
               ${v.word}
             </span>
-            <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 4px;">
-              ${v.partOfSpeech}
-            </span>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              ${statusBadge}
+              <span style="font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #f59e0b; background: rgba(245, 158, 11, 0.12); padding: 1px 6px; border-radius: 4px;">
+                ${v.partOfSpeech}
+              </span>
+            </div>
           </div>
           <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: #64748b;">
             ${v.phonetic || ''}
