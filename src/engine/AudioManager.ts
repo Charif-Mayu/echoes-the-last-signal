@@ -54,7 +54,7 @@ export class AudioManager {
     this.settings = { ...this.settings, ...newSettings };
   }
 
-  public playSynthesizedSFX(type: 'click' | 'blip' | 'success' | 'error' | 'static' | 'radio_on'): void {
+  public playSynthesizedSFX(type: 'click' | 'blip' | 'success' | 'error' | 'static' | 'radio_on' | 'footstep'): void {
     if (this.settings.muted || !this.ctx || this.ctx.state !== 'running') return;
 
     try {
@@ -136,9 +136,77 @@ export class AudioManager {
           osc.start(now);
           osc.stop(now + 0.12);
           break;
+
+        case 'footstep':
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(110, now);
+          osc.frequency.exponentialRampToValueAtTime(45, now + 0.05);
+          gain.gain.setValueAtTime(0.08 * masterVol, now);
+          gain.gain.linearRampToValueAtTime(0.001, now + 0.05);
+          osc.start(now);
+          osc.stop(now + 0.05);
+          break;
       }
     } catch (e) {
       console.warn('[AudioManager] Sound playback error:', e);
+    }
+  }
+
+  private ambientOsc1: OscillatorNode | null = null;
+  private ambientOsc2: OscillatorNode | null = null;
+  private ambientGain: GainNode | null = null;
+
+  public startAmbientDrone(): void {
+    if (this.settings.muted || !this.ctx || this.ambientGain) return;
+    try {
+      const now = this.ctx.currentTime;
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'lowpass';
+      filter.frequency.setValueAtTime(160, now);
+
+      this.ambientGain = this.ctx.createGain();
+      const vol = this.settings.masterVolume * this.settings.musicVolume * 0.07;
+      this.ambientGain.gain.setValueAtTime(0.001, now);
+      this.ambientGain.gain.linearRampToValueAtTime(vol, now + 2.0);
+
+      this.ambientOsc1 = this.ctx.createOscillator();
+      this.ambientOsc1.type = 'sawtooth';
+      this.ambientOsc1.frequency.setValueAtTime(55, now); // A1 note
+
+      this.ambientOsc2 = this.ctx.createOscillator();
+      this.ambientOsc2.type = 'sine';
+      this.ambientOsc2.frequency.setValueAtTime(55.6, now); // subtle detune beat
+
+      this.ambientOsc1.connect(filter);
+      this.ambientOsc2.connect(filter);
+      filter.connect(this.ambientGain);
+      this.ambientGain.connect(this.ctx.destination);
+
+      this.ambientOsc1.start();
+      this.ambientOsc2.start();
+    } catch (e) {
+      console.warn('[AudioManager] Failed to start ambient drone:', e);
+    }
+  }
+
+  public stopAmbientDrone(): void {
+    if (this.ambientGain && this.ctx) {
+      try {
+        const now = this.ctx.currentTime;
+        this.ambientGain.gain.linearRampToValueAtTime(0.001, now + 0.8);
+        setTimeout(() => {
+          this.ambientOsc1?.stop();
+          this.ambientOsc2?.stop();
+          this.ambientOsc1?.disconnect();
+          this.ambientOsc2?.disconnect();
+          this.ambientGain?.disconnect();
+          this.ambientOsc1 = null;
+          this.ambientOsc2 = null;
+          this.ambientGain = null;
+        }, 900);
+      } catch {
+        // Safe cleanup
+      }
     }
   }
 }
