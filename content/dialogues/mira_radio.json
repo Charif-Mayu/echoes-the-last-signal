@@ -1,0 +1,51 @@
+{
+  "id": "dlg_mira_intro",
+  "startId": "mira_01",
+  "lines": {
+    "mira_01": {
+      "id": "mira_01",
+      "speaker": "mira",
+      "speakerDisplayName": "Mira (Radio)",
+      "textEn": "Can you hear me? Please... tell me someone is on this frequency.",
+      "textTh": "ได้ยินฉันไหม? ได้โปรดเถอะ... มีใครรับสัญญาณความถี่นี้ได้บ้าง",
+      "choices": [
+        {
+          "id": "c1_hear_you",
+          "textEn": "I hear you. Who are you? Where am I?",
+          "textTh": "ผมได้ยิน คุณคือใคร? แล้วผมอยู่ที่ไหน?",
+          "nextDialogueId": "mira_02"
+        },
+        {
+          "id": "c2_loud_clear",
+          "textEn": "Loud and clear. The station is empty.",
+          "textTh": "ได้ยินชัดเจนครับ แต่ที่สถานีนี้ไม่มีคนเลย",
+          "nextDialogueId": "mira_02"
+        }
+      ]
+    },
+    "mira_02": {
+      "id": "mira_02",
+      "speaker": "mira",
+      "speakerDisplayName": "Mira (Radio)",
+      "textEn": "My name is Mira. You are in Station 7 beneath Aether City. The central AI, ECHO, collapsed two hours ago.",
+      "textTh": "ฉันชื่อ Mira คุณกำลังอยู่ในสถานีที่ 7 ใต้เมือง Aether City ระบบปัญญาประดิษฐ์ศูนย์กลาง ECHO ล่มไปเมื่อสองชั่วโมงก่อน",
+      "nextDialogueId": "mira_03"
+    },
+    "mira_03": {
+      "id": "mira_03",
+      "speaker": "mira",
+      "speakerDisplayName": "Mira (Radio)",
+      "textEn": "The main trains stopped. You need to reach the surface through Sector B Gate before the automated air scrubbers shut down.",
+      "textTh": "รถไฟสายหลักหยุดวิ่งหมดแล้ว คุณต้องหาทางขึ้นสู่พื้นผิวด้านบนผ่านประตู Sector B ก่อนที่ระบบกรองอากาศอัตโนมัติจะดับลง",
+      "nextDialogueId": "mira_04"
+    },
+    "mira_04": {
+      "id": "mira_04",
+      "speaker": "mira",
+      "speakerDisplayName": "Mira (Radio)",
+      "textEn": "Check the signs on the platform and restore auxiliary power at the substation terminal. I'll stay on this line.",
+      "textTh": "ลองตรวจสอบป้ายนำทางบนชานชาลาและกู้คืนไฟฟ้าสำรองที่เครื่องเทอร์มินัลนะ ฉันจะคอยฟังคลื่นนี้อยู่ตลอด",
+      "triggerEvent": "objective_completed_obj_answer_mira"
+    }
+  }
+}

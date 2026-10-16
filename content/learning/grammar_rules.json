@@ -1,0 +1,47 @@
+[
+  {
+    "id": "rule_there_is_are",
+    "topic": "There is / There are",
+    "level": "A1",
+    "titleEn": "There is / There are",
+    "titleTh": "การบอกตำแหน่งและการมีอยู่ (There is / There are)",
+    "explanationEn": "Use 'There is' with singular nouns and uncountable nouns. Use 'There are' with plural nouns.",
+    "explanationTh": "ใช้ 'There is' กับคำนามเอกพจน์ (1 สิ่ง) และคำนามนับไม่ได้ และใช้ 'There are' กับคำนามพหูพจน์ (2 สิ่งขึ้นไป)",
+    "formula": "There is + singular noun | There are + plural noun",
+    "examples": [
+      { "en": "There is a terminal next to the door.", "th": "มีเครื่องเทอร์มินัลอยู่ข้างประตู" },
+      { "en": "There are three wires on the floor.", "th": "มีสายไฟสามเส้นอยู่บนพื้น" },
+      { "en": "There is water on the platform.", "th": "มีน้ำอยู่บนชานชาลา" }
+    ]
+  },
+  {
+    "id": "rule_present_simple",
+    "topic": "Present Simple Tense",
+    "level": "A1",
+    "titleEn": "Present Simple for Facts & States",
+    "titleTh": "Present Simple สำหรับบอกข้อเท็จจริงและสถานะระบบ",
+    "explanationEn": "Use the base form of the verb for I/You/We/They. Add -s or -es for He/She/It singular subjects.",
+    "explanationTh": "ใช้กริยารูปปกติกับประธาน I/You/We/They และเติม -s หรือ -es สำหรับประธานเอกพจน์ He/She/It",
+    "formula": "Subject (He/She/It) + Verb(s/es) | Subject (I/You/We/They) + Verb",
+    "examples": [
+      { "en": "The generator powers the emergency lights.", "th": "เครื่องกำเนิดไฟฟ้าจ่ายไฟให้ไฟฉุกเฉิน" },
+      { "en": "The monitors display an error message.", "th": "หน้าจอมอนิเตอร์แสดงข้อความแจ้งเตือนข้อผิดพลาด" },
+      { "en": "System ECHO controls the ventilation.", "th": "ระบบ ECHO ควบคุมการระบายอากาศ" }
+    ]
+  },
+  {
+    "id": "rule_prepositions_place",
+    "topic": "Prepositions of Place",
+    "level": "A1",
+    "titleEn": "Prepositions of Place",
+    "titleTh": "คำบุพบทบอกตำแหน่ง (Prepositions of Place)",
+    "explanationEn": "Prepositions describe where an object is located relative to another object.",
+    "explanationTh": "คำบุพบทใช้ระบุตำแหน่งของสิ่งของเมื่อเทียบกับตำแหน่งของสิ่งอื่น",
+    "formula": "Noun + is/are + [preposition] + the + Reference Object",
+    "examples": [
+      { "en": "The battery is inside the console.", "th": "แบตเตอรี่อยู่ภายในคอนโซล" },
+      { "en": "The keycard is under the metal plate.", "th": "คีย์การ์ดอยู่ใต้แผ่นโลหะ" },
+      { "en": "The exit gate is opposite Platform 2.", "th": "ประตูด้านออกอยู่ตรงข้ามกับชานชาลา 2" }
+    ]
+  }
+]

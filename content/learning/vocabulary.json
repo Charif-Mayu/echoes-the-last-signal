@@ -1,0 +1,79 @@
+[
+  {
+    "id": "vocab_terminal",
+    "word": "terminal",
+    "phonetic": "/ˈtɜːrmɪnl/",
+    "partOfSpeech": "noun",
+    "meaningEn": "An electronic station or computer interface used to control systems.",
+    "meaningTh": "เครื่องคอมพิวเตอร์ควบคุมหรือสถานีรับส่งข้อมูล",
+    "exampleSentenceEn": "The terminal glows with faint amber letters.",
+    "exampleSentenceTh": "หน้าจอเทอร์มินัลส่องแสงสีอำพันจางๆ",
+    "chapter": 1
+  },
+  {
+    "id": "vocab_platform",
+    "word": "platform",
+    "phonetic": "/ˈplætfɔːrm/",
+    "partOfSpeech": "noun",
+    "meaningEn": "The raised level area beside the railway tracks where passengers board trains.",
+    "meaningTh": "ชานชาลาสถานีรถไฟ",
+    "exampleSentenceEn": "The investigator walks across the silent platform.",
+    "exampleSentenceTh": "นักสืบเดินข้ามชานชาลาที่เงียบสงัด",
+    "chapter": 1
+  },
+  {
+    "id": "vocab_track",
+    "word": "track",
+    "phonetic": "/træk/",
+    "partOfSpeech": "noun",
+    "meaningEn": "A pair of parallel metal rails on which a train runs.",
+    "meaningTh": "รางรถไฟ",
+    "exampleSentenceEn": "Cold mist drifts over the abandoned train track.",
+    "exampleSentenceTh": "ไอหมอกเย็นลอยปกคลุมรางรถไฟที่ถูกทิ้งร้าง",
+    "chapter": 1
+  },
+  {
+    "id": "vocab_opposite",
+    "word": "opposite",
+    "phonetic": "/ˈɑːpəzɪt/",
+    "partOfSpeech": "preposition",
+    "meaningEn": "Facing or on the further side of something.",
+    "meaningTh": "ตรงข้ามกับ",
+    "exampleSentenceEn": "The emergency exit is opposite the control booth.",
+    "exampleSentenceTh": "ทางออกฉุกเฉินอยู่ตรงข้ามกับป้อมควบคุม",
+    "chapter": 1
+  },
+  {
+    "id": "vocab_between",
+    "word": "between",
+    "phonetic": "/bɪˈtwiːn/",
+    "partOfSpeech": "preposition",
+    "meaningEn": "In or into the middle space separating two objects or points.",
+    "meaningTh": "อยู่ระหว่าง (สองสิ่ง)",
+    "exampleSentenceEn": "The fuse box is located between two steel pillars.",
+    "exampleSentenceTh": "กล่องฟิวส์ตั้งอยู่ระหว่างเสาเหล็กสองต้น",
+    "chapter": 1
+  },
+  {
+    "id": "vocab_power",
+    "word": "power",
+    "phonetic": "/ˈpaʊər/",
+    "partOfSpeech": "noun",
+    "meaningEn": "Electrical or other energy supplied for system operations.",
+    "meaningTh": "พลังงานไฟฟ้า / แหล่งจ่ายไฟ",
+    "exampleSentenceEn": "The main gate lacks electrical power.",
+    "exampleSentenceTh": "ประตูหลักขาดพลังงานไฟฟ้า",
+    "chapter": 1
+  },
+  {
+    "id": "vocab_signal",
+    "word": "signal",
+    "phonetic": "/ˈsɪɡnəl/",
+    "partOfSpeech": "noun",
+    "meaningEn": "An electrical impulse or radio wave transmitted through air or wire.",
+    "meaningTh": "สัญญาณวิทยุหรือสัญญาณไฟฟ้า",
+    "exampleSentenceEn": "A faint radio signal crackles from the speaker.",
+    "exampleSentenceTh": "สัญญาณวิทยุแผ่วเบาดังซ่าออกมาจากลำโพง",
+    "chapter": 1
+  }
+]

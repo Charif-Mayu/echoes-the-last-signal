@@ -1,0 +1,62 @@
+{
+  "id": "chapter_1",
+  "number": 1,
+  "titleEn": "The Last Station",
+  "titleTh": "สถานีสุดท้าย",
+  "cefrLevel": "A1–A2",
+  "estimatedPlaytimeMinutes": "10–12",
+  "premiseEn": "You awaken on the cold platform of an underground transit station in Aether City. The year is 2149. The station is deserted, but an incoming radio transmission from a stranger named Mira pierces the silence.",
+  "premiseTh": "คุณตื่นขึ้นมาบนชานชาลาสถานีรถไฟใต้ดินที่รกร้างใน Aether City ปี ค.ศ. 2149 ไม่มีผู้คนอยู่ในบริเวณนั้น แต่สัญญาณวิทยุจากหญิงสาวปริศนาชื่อ Mira ได้ดังขึ้นท่ามกลางความเงียบงัน",
+  "objectives": [
+    {
+      "id": "obj_wake_up",
+      "chapter": 1,
+      "order": 1,
+      "titleEn": "Recover and survey the station",
+      "titleTh": "ฟื้นสติและสำรวจชานชาลารอบตัว",
+      "descriptionEn": "Use A/D or Arrow Keys to move. Inspect the nearby emergency radio.",
+      "descriptionTh": "ใช้ปุ่ม A/D หรือปุ่มลูกศรเพื่อเคลื่อนที่ และตรวจสอบวิทยุสื่อสารฉุกเฉินที่วางอยู่ใกล้ๆ",
+      "completed": false
+    },
+    {
+      "id": "obj_answer_mira",
+      "chapter": 1,
+      "order": 2,
+      "titleEn": "Respond to Mira's transmission",
+      "titleTh": "ตอบรับสัญญาณวิทยุสื่อสารจาก Mira",
+      "descriptionEn": "Press [E] to activate the radio and receive Mira's instructions.",
+      "descriptionTh": "กดปุ่ม [E] เพื่อเปิดวิทยุสื่อสารและรับฟังคำแนะนำจาก Mira",
+      "completed": false
+    },
+    {
+      "id": "obj_read_sign",
+      "chapter": 1,
+      "order": 3,
+      "titleEn": "Decode the transit navigation sign",
+      "titleTh": "อ่านและถอดรหัสป้ายบอกทางในสถานี",
+      "descriptionEn": "Examine the electronic signpost to locate the exit to Sector B.",
+      "descriptionTh": "ตรวจสอบป้ายบอกทางดิจิทัลเพื่อค้นหาเส้นทางไปยังประตู Sector B",
+      "completed": false
+    },
+    {
+      "id": "obj_override_terminal",
+      "chapter": 1,
+      "order": 4,
+      "titleEn": "Diagnose the power substation terminal",
+      "titleTh": "วิเคราะห์สถานะพลังงานที่เครื่องเทอร์มินัล",
+      "descriptionEn": "Verify the diagnostic logs to restore auxiliary power to the gate.",
+      "descriptionTh": "ตรวจสอบบันทึกสถานะเพื่อจ่ายไฟสำรองให้กับประตูกล",
+      "completed": false
+    },
+    {
+      "id": "obj_escape_station",
+      "chapter": 1,
+      "order": 5,
+      "titleEn": "Unlock and pass through Sector B Gate",
+      "titleTh": "ปลดล็อกและเดินทางผ่านประตู Sector B",
+      "descriptionEn": "Head to the Sector B Gate and enter the transit corridor.",
+      "descriptionTh": "เดินไปยังประตู Sector B เพื่อมุ่งหน้าต่อไปยังทางเดินสู่ใจกลางเมือง",
+      "completed": false
+    }
+  ]
+}

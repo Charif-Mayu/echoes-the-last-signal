@@ -1,0 +1,35 @@
+[
+  {
+    "id": "clue_broken_pocket_watch",
+    "titleEn": "Frozen Pocket Watch",
+    "titleTh": "นาฬิกาพกที่เข็มหยุดเดิน",
+    "descriptionEn": "A mechanical watch stopped precisely at 03:14 AM. The inner casing is inscribed: 'Aether Central Transit - 2149'.",
+    "descriptionTh": "นาฬิกากลไกที่หยุดเดินตรงเวลา 03:14 น. ฝาด้านในสลักว่า: 'Aether Central Transit - 2149'",
+    "locationEn": "Found on the platform next to where you woke up.",
+    "locationTh": "พบอยู่บนชานชาลาข้างจุดที่คุณฟื้นสติ",
+    "category": "artifact",
+    "iconKey": "watch"
+  },
+  {
+    "id": "clue_mira_frequency",
+    "titleEn": "Emergency Radio Protocol Memo",
+    "titleTh": "บันทึกคลื่นวิทยุฉุกเฉิน",
+    "descriptionEn": "A handwritten note folded inside the radio: 'Frequency 142.8 MHz. If you hear this, do not trust ECHO automated broadcasts.'",
+    "descriptionTh": "กระดาษโน้ตเขียนด้วยลายมือสอดอยู่ในวิทยุ: 'ความถี่ 142.8 MHz หากได้ยินข้อความนี้ อย่าไว้ใจเสียงตามสายอัตโนมัติของ ECHO'",
+    "locationEn": "Discovered in the battery slot of the emergency radio.",
+    "locationTh": "พบในช่องใส่แบตเตอรี่ของวิทยุสื่อสารฉุกเฉิน",
+    "category": "document",
+    "iconKey": "memo"
+  },
+  {
+    "id": "clue_transit_log",
+    "titleEn": "Terminal Incident Log #409",
+    "titleTh": "บันทึกเหตุการณ์ฉุกเฉิน #409",
+    "descriptionEn": "'ECHO Memory Wipe initiated across all sub-levels at 02:50. Transit passenger records purged.'",
+    "descriptionTh": "'ระบบ ECHO ได้เริ่มกระบวนการลบความทรงจำทั่วทุกชั้นใต้ดินเมื่อเวลา 02:50 น. ข้อมูลผู้โดยสารถูกทำลาย'",
+    "locationEn": "Extracted from the Auxiliary Sub-Terminal.",
+    "locationTh": "ดึงข้อมูลมาจากเครื่องเทอร์มินัลไฟสำรอง",
+    "category": "system_log",
+    "iconKey": "terminal"
+  }
+]

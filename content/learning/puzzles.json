@@ -1,0 +1,96 @@
+[
+  {
+    "id": "puzzle_station_sign_nav",
+    "chapter": 1,
+    "type": "directions",
+    "titleEn": "Transit Route Override",
+    "titleTh": "การถอดรหัสป้ายบอกทางในสถานี",
+    "contextEn": "A damaged electronic signpost flickers at the central corridor junction. The sign reads: 'SECTOR B GATE: Located directly between Platform 1 and the Maintenance Booth, opposite the Ticket Hall. Do NOT cross the active rail line.'",
+    "contextTh": "ป้ายดิจิทัลที่ชำรุดกะพริบอยู่บริเวณทางแยกหลัก ข้อความบนป้ายระบุว่า: 'SECTOR B GATE: Located directly between Platform 1 and the Maintenance Booth, opposite the Ticket Hall. Do NOT cross the active rail line.'",
+    "instructionEn": "Where should you go to find the Sector B Gate safely?",
+    "instructionTh": "คุณควรเดินไปที่ตำแหน่งใดเพื่อไปยังประตู Sector B ได้อย่างถูกต้อง?",
+    "targetRuleId": "rule_prepositions_place",
+    "options": [
+      {
+        "id": "opt_a",
+        "textEn": "Walk to the area between Platform 1 and the Maintenance Booth.",
+        "textTh": "เดินไปยังพื้นที่ระหว่างชานชาลา 1 และป้อมซ่อมบำรุง",
+        "isCorrect": true,
+        "distractorReasonEn": "Correct! 'Between' means situated in the middle space separating two specified landmarks.",
+        "distractorReasonTh": "ถูกต้อง! 'between' หมายถึงพื้นที่ตรงกลางระหว่างจุดสังเกตสองจุดตามที่ป้ายระบุ"
+      },
+      {
+        "id": "opt_b",
+        "textEn": "Cross the active rail line toward Platform 2.",
+        "textTh": "เดินข้ามรางรถไฟที่ยังจ่ายไฟอยู่ไปยังชานชาลา 2",
+        "isCorrect": false,
+        "distractorReasonEn": "Incorrect. The sign explicitly warns: 'Do NOT cross the active rail line'. Crossing active tracks is hazardous.",
+        "distractorReasonTh": "ไม่ถูกต้อง ป้ายเตือนชัดเจนว่า 'Do NOT cross' (ห้ามข้ามรางรถไฟที่ยังทำงานอยู่)"
+      },
+      {
+        "id": "opt_c",
+        "textEn": "Go inside the Ticket Hall opposite the gate.",
+        "textTh": "เดินเข้าไปในห้องจำหน่ายตั๋วตรงข้ามประตู",
+        "isCorrect": false,
+        "distractorReasonEn": "Incorrect. The Ticket Hall is 'opposite' (across from) the gate, meaning the gate is outside of it, not inside.",
+        "distractorReasonTh": "ไม่ถูกต้อง คำว่า 'opposite' แปลว่าอยู่ตรงข้าม ประตูจึงไม่ได้อยู่ข้างในห้องจำหน่ายตั๋ว"
+      }
+    ],
+    "hintsEn": [
+      "Pay attention to the preposition 'between'. It connects two landmarks.",
+      "Notice the negative warning 'Do NOT cross' regarding the train tracks."
+    ],
+    "hintsTh": [
+      "สังเกตคำบุพบท 'between' ซึ่งแปลว่าอยู่ระหว่างจุดสองจุด",
+      "สังเกตข้อความเตือน 'Do NOT cross' ที่ห้ามเดินข้ามรางรถไฟ"
+    ],
+    "maxRetries": 3
+  },
+  {
+    "id": "puzzle_terminal_diagnostics",
+    "chapter": 1,
+    "type": "grammar_in_context",
+    "titleEn": "AI Auxiliary Terminal Diagnostics",
+    "titleTh": "การวิเคราะห์สถานะระบบเทอร์มินัล ECHO",
+    "contextEn": "The auxiliary sub-terminal displays diagnostic sensor logs about the station's emergency power status. You must verify the correct system report to bypass the security lock.",
+    "contextTh": "หน้าจอเทอร์มินัลแสดงบันทึกสถานะของระบบไฟฟ้าฉุกเฉิน คุณต้องเลือกรายงานทางภาษาที่ถูกต้องเพื่อปลดล็อกระบบรักษาความปลอดภัย",
+    "instructionEn": "Select the grammatically correct system status log:",
+    "instructionTh": "เลือกประโยคที่ถูกต้องตามหลักไวยากรณ์ภาษาอังกฤษเพื่อยืนยันสถานะระบบ:",
+    "targetRuleId": "rule_there_is_are",
+    "options": [
+      {
+        "id": "opt_t1",
+        "textEn": "There is two backup batteries inside the cabinet.",
+        "textTh": "There is two backup batteries inside the cabinet.",
+        "isCorrect": false,
+        "distractorReasonEn": "Incorrect. 'Two backup batteries' is a plural noun (2 items), so it requires 'There are', not 'There is'.",
+        "distractorReasonTh": "ไม่ถูกต้อง คำนาม 'two backup batteries' เป็นพหูพจน์ (แบตเตอรี่ 2 ลูก) ต้องใช้ 'There are' ไม่ใช่ 'There is'"
+      },
+      {
+        "id": "opt_t2",
+        "textEn": "There is enough power to unlock Sector B Gate.",
+        "textTh": "There is enough power to unlock Sector B Gate.",
+        "isCorrect": true,
+        "distractorReasonEn": "Correct! 'Power' is an uncountable noun, so the singular existential verb 'There is' is grammatically correct.",
+        "distractorReasonTh": "ถูกต้อง! คำว่า 'power' (พลังงาน) เป็นคำนามนับไม่ได้ จึงใช้ 'There is' ถูกต้องตามหลักไวยากรณ์"
+      },
+      {
+        "id": "opt_t3",
+        "textEn": "There are a broken fuse on the primary circuit.",
+        "textTh": "There are a broken fuse on the primary circuit.",
+        "isCorrect": false,
+        "distractorReasonEn": "Incorrect. 'A broken fuse' is singular (1 item indicated by 'a'), so it requires 'There is', not 'There are'.",
+        "distractorReasonTh": "ไม่ถูกต้อง 'a broken fuse' เป็นคำนามเอกพจน์ (ฟิวส์ 1 ตัว สังเกตจาก 'a') จึงต้องใช้ 'There is'"
+      }
+    ],
+    "hintsEn": [
+      "Remember: Use 'There is' with uncountable nouns (like power, water, air) and singular nouns.",
+      "Check whether each subject noun has an article like 'a/an' or a plural '-s' ending."
+    ],
+    "hintsTh": [
+      "จำไว้ว่า: ใช้ 'There is' กับคำนามเอกพจน์และคำนามนับไม่ได้ (เช่น power, water)",
+      "สังเกตว่าคำนามในประโยคเป็นเอกพจน์ (มี a/an) หรือเป็นพหูพจน์ (มี -s)"
+    ],
+    "maxRetries": 3
+  }
+]
