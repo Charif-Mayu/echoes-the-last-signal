@@ -1,4 +1,3 @@
-import { saveManager } from '../persistence/SaveManager';
 import { audioManager } from '../engine/AudioManager';
 import { objectiveTracker } from '../systems/ObjectiveTracker';
 import { EvidenceItem, Objective } from '../types/narrative';
@@ -43,11 +42,14 @@ export class HUDOverlay {
             <button id="btn-open-journal" class="interactive-element" style="background: rgba(14, 116, 144, 0.35); border: 1px solid #38bdf8; color: #f8fafc; border-radius: 6px; padding: 8px 14px; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s;">
               📁 JOURNAL [J]
             </button>
+            <button id="btn-open-settings" class="interactive-element" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); color: #cbd5e1; border-radius: 6px; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.2s;">
+              ⚙ SETTINGS
+            </button>
+            <button id="btn-open-menu" class="interactive-element" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); color: #cbd5e1; border-radius: 6px; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.2s;">
+              ☰ MENU
+            </button>
             <button id="btn-audio-toggle" class="interactive-element" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); color: #94a3b8; border-radius: 6px; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.2s;">
               AUDIO: ON
-            </button>
-            <button id="btn-restart-ch" class="interactive-element" style="background: rgba(15, 23, 42, 0.85); border: 1px solid rgba(148, 163, 184, 0.25); color: #94a3b8; border-radius: 6px; padding: 8px 12px; font-family: 'JetBrains Mono', monospace; font-size: 12px; cursor: pointer; transition: all 0.2s;">
-              RESTART CH.1
             </button>
           </div>
         </header>
@@ -100,6 +102,18 @@ export class HUDOverlay {
       window.dispatchEvent(new CustomEvent('ui:open_journal'));
     });
 
+    // Settings button
+    const settingsBtn = document.getElementById('btn-open-settings');
+    settingsBtn?.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('ui:open_settings'));
+    });
+
+    // Menu button
+    const menuBtn = document.getElementById('btn-open-menu');
+    menuBtn?.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('ui:open_main_menu'));
+    });
+
     // Audio toggle
     const audioBtn = document.getElementById('btn-audio-toggle');
     if (audioBtn) {
@@ -110,17 +124,6 @@ export class HUDOverlay {
         audioBtn.textContent = nextMuted ? 'AUDIO: OFF' : 'AUDIO: ON';
         audioBtn.style.color = nextMuted ? '#ef4444' : '#38bdf8';
         audioManager.playSynthesizedSFX('click');
-      });
-    }
-
-    // Restart button
-    const restartBtn = document.getElementById('btn-restart-ch');
-    if (restartBtn) {
-      restartBtn.addEventListener('click', () => {
-        if (confirm('Restart Chapter 1 from the beginning? Unsaved progress will be reset.')) {
-          saveManager.resetChapter(1);
-          window.location.reload();
-        }
       });
     }
 

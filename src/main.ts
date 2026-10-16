@@ -7,6 +7,9 @@ import { HUDOverlay } from './ui/HUDOverlay';
 import { DialogueModal } from './ui/DialogueModal';
 import { JournalModal } from './ui/JournalModal';
 import { PuzzleModal } from './ui/PuzzleModal';
+import { SettingsModal } from './ui/SettingsModal';
+import { MainMenuModal } from './ui/MainMenuModal';
+import { ChapterSummaryModal } from './ui/ChapterSummaryModal';
 import { audioManager } from './engine/AudioManager';
 import { saveManager } from './persistence/SaveManager';
 import { dialogueRunner } from './systems/DialogueRunner';
@@ -17,7 +20,7 @@ import { DialogueTree } from './types/narrative';
 import miraRadioData from '../content/dialogues/mira_radio.json';
 
 console.log(
-  '%c ECHOES: THE LAST SIGNAL %c Checkpoint 4 Contextual English Puzzles & Learning Engine Active ',
+  '%c ECHOES: THE LAST SIGNAL %c Checkpoint 5 Complete Chapter 1 & Save System Active ',
   'background: #0e7490; color: #fff; font-weight: bold;',
   'background: #0f172a; color: #38bdf8;'
 );
@@ -27,12 +30,18 @@ let hud: HUDOverlay | null = null;
 let dialogueModal: DialogueModal | null = null;
 let journalModal: JournalModal | null = null;
 let puzzleModal: PuzzleModal | null = null;
+let settingsModal: SettingsModal | null = null;
+let mainMenuModal: MainMenuModal | null = null;
+let chapterSummaryModal: ChapterSummaryModal | null = null;
 
 try {
   hud = new HUDOverlay('ui-container');
   dialogueModal = new DialogueModal('ui-container');
   journalModal = new JournalModal('ui-container');
   puzzleModal = new PuzzleModal('ui-container');
+  settingsModal = new SettingsModal('ui-container');
+  mainMenuModal = new MainMenuModal('ui-container');
+  chapterSummaryModal = new ChapterSummaryModal('ui-container');
 } catch (e) {
   console.warn('[main] DOM UI overlay initialization warning:', e);
 }
@@ -45,11 +54,23 @@ const config: Phaser.Types.Core.GameConfig = {
 
 const game = new Phaser.Game(config);
 
-// 3. Initial Awakening Clue Discovery
+// 3. Initial Awakening Clue Discovery & Tutorial Toast
 if (!evidenceManager.hasClue('clue_broken_pocket_watch')) {
   setTimeout(() => {
     evidenceManager.discoverClue('clue_broken_pocket_watch');
   }, 1200);
+}
+
+// Show title menu on initial load
+if (mainMenuModal) {
+  mainMenuModal.open(() => {
+    // When title menu closes (Continue or New Game chosen)
+    if (objectiveTracker.getCurrentObjective().id === 'obj_wake_up') {
+      setTimeout(() => {
+        hud?.showToast('Awakening: Use [A/D] or [←/→] to move, [E / Space] to interact with station equipment.', 5000);
+      }, 800);
+    }
+  });
 }
 
 // 4. Bridge Virtual Touch Inputs from HUD to StationScene
@@ -88,7 +109,10 @@ window.addEventListener('game:interaction', (e: Event) => {
   if (
     dialogueModal?.getIsVisible() ||
     journalModal?.getIsVisible() ||
-    puzzleModal?.getIsVisible()
+    puzzleModal?.getIsVisible() ||
+    settingsModal?.getIsVisible() ||
+    mainMenuModal?.getIsVisible() ||
+    chapterSummaryModal?.getIsVisible()
   ) {
     return;
   }
@@ -129,7 +153,9 @@ window.addEventListener('game:interaction', (e: Event) => {
         puzzleModal?.openPuzzle('puzzle_gate_override', () => {
           objectiveTracker.completeObjective('obj_escape_station');
           hud?.showToast('✔ Sector B Blast Gate Unlocked! Exiting Station 7...', 4500);
-          window.dispatchEvent(new CustomEvent('chapter:completed', { detail: { chapter: 1 } }));
+          setTimeout(() => {
+            window.dispatchEvent(new CustomEvent('chapter:completed', { detail: { chapter: 1 } }));
+          }, 800);
         });
       }
       break;
@@ -153,5 +179,8 @@ window.addEventListener('error', (event) => {
   hud,
   dialogueModal,
   journalModal,
-  puzzleModal
+  puzzleModal,
+  settingsModal,
+  mainMenuModal,
+  chapterSummaryModal
 };

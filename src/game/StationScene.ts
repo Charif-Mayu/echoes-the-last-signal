@@ -28,6 +28,9 @@ export class StationScene extends Phaser.Scene {
   private lastFootstepTime: number = 0;
   private footstepIntervalMs: number = 300;
 
+  // Auto-save checkpoint throttle
+  private lastAutoSaveTime: number = 0;
+
   // Ambient particles
   private mistParticles?: Phaser.GameObjects.Particles.ParticleEmitter;
 
@@ -71,6 +74,9 @@ export class StationScene extends Phaser.Scene {
     // Smooth cinematic camera follow with horizontal damping
     this.cameras.main.startFollow(this.player, true, 0.06, 0.06);
     this.cameras.main.setDeadzone(100, 50);
+
+    // Cinematic Awakening Fade-in
+    this.cameras.main.fadeIn(1600, 4, 9, 18);
 
     // 7. Input Manager
     this.inputManager = new InputManager(this);
@@ -304,6 +310,17 @@ export class StationScene extends Phaser.Scene {
 
     // Check interaction targets
     this.checkInteractions(input.interact);
+
+    // Periodic Checkpoint Coordinate Auto-Save (every 3 seconds)
+    if (time - this.lastAutoSaveTime > 3000) {
+      this.lastAutoSaveTime = time;
+      const current = saveManager.load();
+      if (Math.abs((current.checkpoint.playerX || 0) - this.player.x) > 30) {
+        current.checkpoint.playerX = Math.round(this.player.x);
+        current.checkpoint.playerY = Math.round(this.player.y);
+        saveManager.save(current);
+      }
+    }
   }
 
   private triggerFootstepAudio(currentTime: number): void {
